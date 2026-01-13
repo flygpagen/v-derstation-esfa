@@ -1,4 +1,5 @@
 import { CloudRain, Droplet } from 'lucide-react';
+import { formatValue } from '@/lib/formatNumber';
 
 interface RainCardProps {
   rainDay: number;
@@ -48,7 +49,7 @@ export const RainCard = ({ rainDay, rainRate }: RainCardProps) => {
           
           <div className="mt-3 text-center">
             <p className="stat-label">Idag</p>
-            <p className="stat-value">{rainDay} mm</p>
+            <p className="stat-value">{formatValue(rainDay)} mm</p>
           </div>
         </div>
 
@@ -62,7 +63,7 @@ export const RainCard = ({ rainDay, rainRate }: RainCardProps) => {
           
           <div className="mt-4 text-center">
             <p className="stat-label">Regnintensitet</p>
-            <p className="stat-value">{rainRate} mm/h</p>
+            <p className="stat-value">{formatValue(rainRate)} mm/h</p>
             <p className="text-sm text-muted-foreground mt-1">
               {isRaining ? 'Det regnar nu' : 'Inget regn'}
             </p>

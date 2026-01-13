@@ -1,4 +1,5 @@
 import { Gauge, Droplets, ThermometerSnowflake, Sun, Zap } from 'lucide-react';
+import { formatValue } from '@/lib/formatNumber';
 
 interface AtmosphereCardProps {
   barometer: number;
@@ -33,17 +34,17 @@ export const AtmosphereCard = ({
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center p-3 rounded-xl bg-secondary/50">
             <p className="stat-label">Barometer</p>
-            <p className="stat-value text-base">{barometer}</p>
+            <p className="stat-value text-base">{formatValue(barometer)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
           <div className="text-center p-3 rounded-xl bg-secondary/50">
             <p className="stat-label">QNH</p>
-            <p className="stat-value text-base">{qnh}</p>
+            <p className="stat-value text-base">{formatValue(qnh)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
           <div className="text-center p-3 rounded-xl bg-secondary/50">
             <p className="stat-label">QFE</p>
-            <p className="stat-value text-base">{qfe}</p>
+            <p className="stat-value text-base">{formatValue(qfe)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
         </div>
@@ -54,28 +55,28 @@ export const AtmosphereCard = ({
             <Droplets className="w-5 h-5 text-blue-400" />
             <div>
               <p className="stat-label">Luftfuktighet</p>
-              <p className="font-semibold">{humidity}%</p>
+              <p className="font-semibold">{formatValue(humidity, 0)}%</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
             <ThermometerSnowflake className="w-5 h-5 text-cyan-400" />
             <div>
               <p className="stat-label">Daggpunkt</p>
-              <p className="font-semibold">{dewpoint}°C</p>
+              <p className="font-semibold">{formatValue(dewpoint)}°C</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
             <Sun className="w-5 h-5 text-yellow-400" />
             <div>
               <p className="stat-label">UV-index</p>
-              <p className="font-semibold">{uvIndex}</p>
+              <p className="font-semibold">{formatValue(uvIndex)}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
             <Zap className="w-5 h-5 text-amber-400" />
             <div>
               <p className="stat-label">Solinstrålning</p>
-              <p className="font-semibold">{solarRadiation} W/m²</p>
+              <p className="font-semibold">{formatValue(solarRadiation, 0)} W/m²</p>
             </div>
           </div>
         </div>

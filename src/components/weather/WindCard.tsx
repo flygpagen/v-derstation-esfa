@@ -1,4 +1,5 @@
 import { Wind, Navigation } from 'lucide-react';
+import { formatValue } from '@/lib/formatNumber';
 
 interface WindCardProps {
   speed: number;
@@ -50,7 +51,7 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
           {/* Direction label */}
           <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-center">
             <span className="text-lg font-semibold text-foreground">{directionText}</span>
-            <span className="text-sm text-muted-foreground ml-1">{direction}°</span>
+            <span className="text-sm text-muted-foreground ml-1">{formatValue(direction, 0)}°</span>
           </div>
         </div>
 
@@ -59,11 +60,11 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="stat-label">Styrka</p>
-              <p className="stat-value">{speed}</p>
+              <p className="stat-value">{formatValue(speed)}</p>
             </div>
             <div>
               <p className="stat-label">Byvind</p>
-              <p className="stat-value">{gust}</p>
+              <p className="stat-value">{formatValue(gust)}</p>
             </div>
           </div>
           
