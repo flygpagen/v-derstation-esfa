@@ -48,13 +48,10 @@ export const WindCard = ({
   };
   return <div className="glass-card p-6 lg:col-span-2">
       <div className="flex items-start justify-between mb-4">
-        <div className="flex gap-2">
-          <div className="p-2 rounded-xl bg-primary/10">
-            <Wind className="w-6 h-6 text-primary animate-wind" />
-          </div>
-          
-        </div>
-        <span className="text-muted-foreground text-lg">Vind</span>
+        <h3 className="section-title">
+          <Wind className="w-[24px] h-[24px] text-primary animate-wind" />
+          Vind
+        </h3>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -14,11 +14,11 @@ export const TemperatureCard = ({
 }: TemperatureCardProps) => {
   const isWarm = temperature > 15;
   return <div className="glass-card p-6 flex flex-col justify-between">
-      <div className="flex items-start justify-between">
-        <div className="p-2 rounded-xl bg-primary/10">
-          <Thermometer className="w-6 h-6 text-primary" />
-        </div>
-        <span className="text-muted-foreground text-lg">Temperatur</span>
+      <div className="flex items-start justify-between mb-6">
+        <h3 className="section-title">
+          <Thermometer className="w-[24px] h-[24px] text-primary" />
+          Temperatur
+        </h3>
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center py-6">

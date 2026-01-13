@@ -19,10 +19,10 @@ export const AtmosphereCard = ({
   const qfe = barometer - 5;
   return <div className="glass-card p-6">
       <div className="flex items-start justify-between mb-6">
-        <div className="p-2 rounded-xl bg-primary/10">
-          <Gauge className="w-6 h-6 text-primary" />
-        </div>
-        <span className="text-muted-foreground text-lg">Atmosfär</span>
+        <h3 className="section-title">
+          <Gauge className="w-[24px] h-[24px] text-primary" />
+          Atmosfär
+        </h3>
       </div>
 
       <div className="space-y-4">
