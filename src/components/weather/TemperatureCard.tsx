@@ -25,44 +25,42 @@ export const TemperatureCard = ({
         </h3>
       </div>
       
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Camera stream */}
-        {streamUrl && (
-          <div className="relative aspect-video md:w-1/2 rounded-lg overflow-hidden bg-black/20 flex-shrink-0">
-            <img 
-              src={streamUrl}
-              alt="Webbkamera"
-              className="w-full h-full object-cover"
-            />
+      {/* Temperature info */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="text-4xl md:text-5xl font-bold text-foreground">
+            {formatValue(temperature)}
+            <span className="text-2xl md:text-3xl align-top">°C</span>
           </div>
-        )}
+          <p className="text-sm text-muted-foreground mt-1">
+            Känns som: <span className="text-foreground font-medium">{formatValue(feelsLike)}°</span>
+          </p>
+        </div>
         
-        {/* Temperature info */}
-        <div className={`flex flex-col justify-center ${streamUrl ? 'md:w-1/2' : 'w-full'}`}>
-          <div className="text-center md:text-left">
-            <div className="text-4xl md:text-5xl font-bold text-foreground">
-              {formatValue(temperature)}
-              <span className="text-2xl md:text-3xl align-top">°C</span>
-            </div>
-            <p className="text-sm text-muted-foreground mt-1">
-              Känns som: <span className="text-foreground font-medium">{formatValue(feelsLike)}°</span>
-            </p>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <TrendingUp className="w-4 h-4 text-orange-400" />
+            <span className="text-sm text-muted-foreground">Högsta</span>
+            <span className="font-medium">{formatValue(high)}°</span>
           </div>
-          
-          <div className="flex items-center justify-center md:justify-start gap-4 mt-4 pt-3 border-t border-border/50">
-            <div className="flex items-center gap-1.5">
-              <TrendingUp className="w-4 h-4 text-orange-400" />
-              <span className="text-sm text-muted-foreground">Högsta</span>
-              <span className="font-medium">{formatValue(high)}°</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <TrendingDown className="w-4 h-4 text-blue-400" />
-              <span className="text-sm text-muted-foreground">Lägsta</span>
-              <span className="font-medium">{formatValue(low)}°</span>
-            </div>
+          <div className="flex items-center gap-1.5">
+            <TrendingDown className="w-4 h-4 text-blue-400" />
+            <span className="text-sm text-muted-foreground">Lägsta</span>
+            <span className="font-medium">{formatValue(low)}°</span>
           </div>
         </div>
       </div>
+      
+      {/* Camera stream */}
+      {streamUrl && (
+        <div className="relative aspect-video rounded-lg overflow-hidden bg-black/20">
+          <img 
+            src={streamUrl}
+            alt="Webbkamera"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
     </div>
   );
 };
