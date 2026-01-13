@@ -67,6 +67,7 @@ export const WeatherDashboard = () => {
             dewpoint={weatherData.dewpoint}
             uvIndex={weatherData.uvIndex}
             solarRadiation={weatherData.solarRadiation}
+            temperature={weatherData.temperature}
           />
           
           {/* Rain data */}
