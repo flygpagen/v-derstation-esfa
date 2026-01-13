@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import mqtt, { MqttClient } from 'mqtt';
 import type { WeatherData } from '@/components/WeatherDashboard';
 
-const MQTT_BROKER = 'wss://mqtt.hassleholmsflygklubb.se:8084/mqtt';
+const MQTT_BROKER = 'wss://mqtt.hassleholmsflygklubb.se:8443/mqtt';
 
 const getWindDirection = (degrees: number): string => {
   const directions = ['N', 'NNÖ', 'NÖ', 'ÖNÖ', 'Ö', 'ÖSÖ', 'SÖ', 'SSÖ', 'S', 'SSV', 'SV', 'VSV', 'V', 'VNV', 'NV', 'NNV'];
