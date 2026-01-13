@@ -4,7 +4,7 @@ import { AtmosphereCard } from './weather/AtmosphereCard';
 import { SunMoonCard } from './weather/SunMoonCard';
 import { WeatherHeader } from './weather/WeatherHeader';
 import { RainCard } from './weather/RainCard';
-import { useMqttWeather } from '@/hooks/useMqttWeather';
+import { useWeatherContext } from '@/contexts/WeatherContext';
 
 export interface WeatherData {
   temperature: number;
@@ -30,7 +30,7 @@ export interface WeatherData {
 }
 
 export const WeatherDashboard = () => {
-  const { weatherData, isConnected, error } = useMqttWeather();
+  const { weatherData, isConnected } = useWeatherContext();
 
   return (
     <div className="min-h-screen p-4 md:p-8">

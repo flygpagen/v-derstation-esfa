@@ -1,4 +1,6 @@
-import { CloudSun } from 'lucide-react';
+import { CloudSun, History } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 interface WeatherHeaderProps {
   isConnected: boolean;
@@ -33,11 +35,20 @@ export const WeatherHeader = ({ isConnected, lastUpdated }: WeatherHeaderProps) 
         </div>
       </div>
       
-      <div className="flex items-center gap-3 glass-card px-4 py-2">
-        <div className={`pulse-dot ${!isConnected && 'bg-red-500'}`} />
-        <span className="text-sm text-muted-foreground">
-          {isConnected ? 'Ansluten' : 'Frånkopplad'} • Senast uppdaterad {formatDate(lastUpdated)}
-        </span>
+      <div className="flex items-center gap-3">
+        <Button variant="outline" asChild>
+          <Link to="/historik" className="flex items-center gap-2">
+            <History className="w-4 h-4" />
+            Historik
+          </Link>
+        </Button>
+        
+        <div className="glass-card px-4 py-2 flex items-center gap-3">
+          <div className={`pulse-dot ${!isConnected && 'bg-red-500'}`} />
+          <span className="text-sm text-muted-foreground">
+            {isConnected ? 'Ansluten' : 'Frånkopplad'} • {formatDate(lastUpdated)}
+          </span>
+        </div>
       </div>
     </header>
   );
