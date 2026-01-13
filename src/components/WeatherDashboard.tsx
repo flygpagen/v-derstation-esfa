@@ -1,5 +1,6 @@
 import { TemperatureCard } from './weather/TemperatureCard';
 import { WindCard } from './weather/WindCard';
+import { RunwayWindCard } from './weather/RunwayWindCard';
 import { AtmosphereCard } from './weather/AtmosphereCard';
 import { SunMoonCard } from './weather/SunMoonCard';
 import { WeatherHeader } from './weather/WeatherHeader';
@@ -67,7 +68,13 @@ export const WeatherDashboard = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Runway wind */}
+          <RunwayWindCard 
+            windDirection={weatherData.windDirection}
+            windSpeed={weatherData.windSpeed}
+          />
+          
           {/* Rain data */}
           <RainCard 
             rainDay={weatherData.rainDay}
