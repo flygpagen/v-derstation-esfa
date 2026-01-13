@@ -1,4 +1,4 @@
-import { Wind, Navigation, Plane } from 'lucide-react';
+import { Wind, Plane } from 'lucide-react';
 import { formatValue } from '@/lib/formatNumber';
 
 interface WindCardProps {
@@ -60,49 +60,29 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left side - Compass and wind stats */}
-        <div className="flex flex-col">
-          <div className="flex items-center gap-6 mb-4">
-            {/* Compass */}
-            <div className="wind-compass flex items-center justify-center">
-              <div className="absolute inset-2 rounded-full border border-border/30 flex items-center justify-center">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="absolute top-1 text-xs font-medium text-muted-foreground">N</span>
-                  <span className="absolute bottom-1 text-xs font-medium text-muted-foreground">S</span>
-                  <span className="absolute left-1 text-xs font-medium text-muted-foreground">V</span>
-                  <span className="absolute right-1 text-xs font-medium text-muted-foreground">Ö</span>
-                </div>
-                
-                <Navigation 
-                  className="w-8 h-8 text-primary transition-transform duration-700 ease-out"
-                  style={{ transform: `rotate(${direction}deg)` }}
-                  fill="hsl(var(--primary))"
-                />
-              </div>
-              
-              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-center">
-                <span className="text-lg font-semibold text-foreground">{directionText}</span>
-                <span className="text-sm text-muted-foreground ml-1">{formatValue(direction, 0)}°</span>
-              </div>
+        {/* Left side - Wind stats */}
+        <div className="flex flex-col justify-center">
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <p className="stat-label">Styrka</p>
+              <p className="stat-value">{formatValue(speed)}</p>
             </div>
-
-            {/* Wind stats */}
-            <div className="flex-1 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <p className="stat-label">Styrka</p>
-                  <p className="stat-value">{formatValue(speed)}</p>
-                </div>
-                <div>
-                  <p className="stat-label">Byvind</p>
-                  <p className="stat-value">{formatValue(gust)}</p>
-                </div>
-              </div>
-              
-              <div className="pt-2 border-t border-border/50">
-                <p className="text-sm text-muted-foreground">knop</p>
-                <p className="text-foreground font-medium">{getWindStrength(speed)}</p>
-              </div>
+            <div>
+              <p className="stat-label">Byvind</p>
+              <p className="stat-value">{formatValue(gust)}</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 pt-3 border-t border-border/50">
+            <div>
+              <p className="stat-label">Riktning</p>
+              <p className="text-xl font-semibold text-foreground">{directionText}</p>
+              <p className="text-sm text-muted-foreground">{formatValue(direction, 0)}°</p>
+            </div>
+            <div>
+              <p className="stat-label">Vindstyrka</p>
+              <p className="text-foreground font-medium">{getWindStrength(speed)}</p>
+              <p className="text-sm text-muted-foreground">knop</p>
             </div>
           </div>
         </div>
