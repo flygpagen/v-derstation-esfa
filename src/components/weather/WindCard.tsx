@@ -1,17 +1,19 @@
-import { Wind, Plane } from 'lucide-react';
+import { Wind } from 'lucide-react';
 import { formatValue } from '@/lib/formatNumber';
-
 interface WindCardProps {
   speed: number;
   gust: number;
   direction: number;
   directionText: string;
 }
-
 const RUNWAY_04 = 40;
 const RUNWAY_22 = 220;
-
-export const WindCard = ({ speed, gust, direction, directionText }: WindCardProps) => {
+export const WindCard = ({
+  speed,
+  gust,
+  direction,
+  directionText
+}: WindCardProps) => {
   const getWindStrength = (speed: number): string => {
     if (speed < 1) return 'Stiltje';
     if (speed < 4) return 'Svag vind';
@@ -24,39 +26,35 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
 
   // Calculate wind components for both runway directions
   const calculateWindComponents = (runwayHeading: number) => {
-    const relativeAngle = ((direction - runwayHeading + 360) % 360) * (Math.PI / 180);
+    const relativeAngle = (direction - runwayHeading + 360) % 360 * (Math.PI / 180);
     const headwind = speed * Math.cos(relativeAngle);
     const crosswind = speed * Math.sin(relativeAngle);
-    return { headwind, crosswind };
+    return {
+      headwind,
+      crosswind
+    };
   };
-
   const rwy04 = calculateWindComponents(RUNWAY_04);
   const rwy22 = calculateWindComponents(RUNWAY_22);
   const preferredRunway = rwy04.headwind >= rwy22.headwind ? '04' : '22';
-
   const getWindLabel = (headwind: number) => {
     if (headwind > 0.5) return 'Motvind';
     if (headwind < -0.5) return 'Medvind';
     return 'Neutral';
   };
-
   const getCrosswindLabel = (crosswind: number) => {
     if (Math.abs(crosswind) < 0.5) return '';
     return crosswind > 0 ? 'från höger' : 'från vänster';
   };
-
-  return (
-    <div className="glass-card p-6 lg:col-span-2">
+  return <div className="glass-card p-6 lg:col-span-2">
       <div className="flex items-start justify-between mb-4">
         <div className="flex gap-2">
           <div className="p-2 rounded-xl bg-primary/10">
             <Wind className="w-6 h-6 text-primary animate-wind" />
           </div>
-          <div className="p-2 rounded-xl bg-primary/10">
-            <Plane className="w-6 h-6 text-primary" />
-          </div>
+          
         </div>
-        <span className="text-sm text-muted-foreground">Vind & Banvind ESFA</span>
+        <span className="text-muted-foreground text-lg">Vind</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -73,37 +71,31 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
               </div>
 
               {/* Runway strip */}
-              <div 
-                className="absolute left-1/2 top-1/2 w-3 md:w-2.5 h-32 md:h-28 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-muted-foreground/60"
-                style={{ transform: `translate(-50%, -50%) rotate(${RUNWAY_04}deg)` }}
-              >
+              <div className="absolute left-1/2 top-1/2 w-3 md:w-2.5 h-32 md:h-28 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-muted-foreground/60" style={{
+              transform: `translate(-50%, -50%) rotate(${RUNWAY_04}deg)`
+            }}>
                 <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-5 md:w-4 h-1 bg-muted-foreground/80 rounded-sm" />
                 <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-5 md:w-4 h-1 bg-muted-foreground/80 rounded-sm" />
                 
-                <span 
-                  className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm md:text-xs font-bold text-foreground"
-                  style={{ transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)` }}
-                >
+                <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm md:text-xs font-bold text-foreground" style={{
+                transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)`
+              }}>
                   04
                 </span>
-                <span 
-                  className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-sm md:text-xs font-bold text-foreground"
-                  style={{ transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)` }}
-                >
+                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-sm md:text-xs font-bold text-foreground" style={{
+                transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)`
+              }}>
                   22
                 </span>
               </div>
 
               {/* Wind arrow */}
-              <div 
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                style={{ transform: `translate(-50%, -50%) rotate(${direction}deg)` }}
-              >
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{
+              transform: `translate(-50%, -50%) rotate(${direction}deg)`
+            }}>
                 <div className="relative h-20 md:h-16 flex flex-col items-center">
                   <div className="w-1 md:w-0.5 h-12 md:h-10 bg-primary" />
-                  <div 
-                    className="w-0 h-0 border-l-[6px] md:border-l-[5px] border-l-transparent border-r-[6px] md:border-r-[5px] border-r-transparent border-t-[10px] md:border-t-[8px] border-t-primary"
-                  />
+                  <div className="w-0 h-0 border-l-[6px] md:border-l-[5px] border-l-transparent border-r-[6px] md:border-r-[5px] border-r-transparent border-t-[10px] md:border-t-[8px] border-t-primary" />
                 </div>
               </div>
             </div>
@@ -166,6 +158,5 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
