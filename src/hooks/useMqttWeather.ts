@@ -2,7 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import mqtt, { MqttClient } from 'mqtt';
 import type { WeatherData } from '@/components/WeatherDashboard';
 
-const MQTT_BROKER = 'wss://mqtt.hassleholmsflygklubb.se:8443/mqtt';
+const MQTT_BROKER = 'wss://mqtt.hassleholmsflygklubb.se:8443';
+const MQTT_USERNAME = 'HFK';
+const MQTT_PASSWORD = 'hfk1969';
 
 const getWindDirection = (degrees: number): string => {
   const directions = ['N', 'NNÖ', 'NÖ', 'ÖNÖ', 'Ö', 'ÖSÖ', 'SÖ', 'SSÖ', 'S', 'SSV', 'SV', 'VSV', 'V', 'VNV', 'NV', 'NNV'];
@@ -38,51 +40,33 @@ export const useMqttWeather = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateWeatherField = useCallback((topic: string, value: string) => {
-    const numValue = parseFloat(value);
-    
-    setWeatherData(prev => {
-      const updated = { ...prev, lastUpdated: new Date() };
-      
-      // Map MQTT topics to weather data fields
-      // Common Weewx MQTT topic patterns
-      if (topic.includes('outTemp') || topic.includes('temperature')) {
-        updated.temperature = numValue;
-      } else if (topic.includes('windchill') || topic.includes('feelsLike') || topic.includes('appTemp')) {
-        updated.feelsLike = numValue;
-      } else if (topic.includes('outTempMax') || topic.includes('tempHigh')) {
-        updated.tempHigh = numValue;
-      } else if (topic.includes('outTempMin') || topic.includes('tempLow')) {
-        updated.tempLow = numValue;
-      } else if (topic.includes('windSpeed') || topic.includes('wind_speed')) {
-        updated.windSpeed = numValue;
-      } else if (topic.includes('windGust') || topic.includes('wind_gust')) {
-        updated.windGust = numValue;
-      } else if (topic.includes('windDir') || topic.includes('wind_dir')) {
-        updated.windDirection = numValue;
-        updated.windDirectionText = getWindDirection(numValue);
-      } else if (topic.includes('barometer') || topic.includes('pressure')) {
-        updated.barometer = numValue;
-      } else if (topic.includes('outHumidity') || topic.includes('humidity')) {
-        updated.humidity = numValue;
-      } else if (topic.includes('dewpoint')) {
-        updated.dewpoint = numValue;
-      } else if (topic.includes('UV') || topic.includes('uv')) {
-        updated.uvIndex = numValue;
-      } else if (topic.includes('radiation') || topic.includes('solar')) {
-        updated.solarRadiation = numValue;
-      } else if (topic.includes('dayRain') || topic.includes('rain_day')) {
-        updated.rainDay = numValue;
-      } else if (topic.includes('rainRate') || topic.includes('rain_rate')) {
-        updated.rainRate = numValue;
-      } else if (topic.includes('sunrise')) {
-        updated.sunrise = value;
-      } else if (topic.includes('sunset')) {
-        updated.sunset = value;
+  const updateWeatherData = useCallback((topic: string, message: string) => {
+    // Handle JSON payload from weather/loop topic
+    if (topic === 'weather/loop') {
+      try {
+        const data = JSON.parse(message);
+        
+        setWeatherData(prev => ({
+          ...prev,
+          temperature: data.outTemp_C ?? prev.temperature,
+          feelsLike: data.appTemp_C ?? data.windchill_C ?? prev.feelsLike,
+          windSpeed: (data.windSpeed_knot ?? 0) * 0.514444, // Convert knots to m/s
+          windGust: (data.windGust_knot ?? 0) * 0.514444, // Convert knots to m/s
+          windDirection: data.windDir ?? prev.windDirection,
+          windDirectionText: getWindDirection(data.windDir ?? prev.windDirection),
+          barometer: data.barometer_mbar ?? prev.barometer,
+          humidity: data.outHumidity ?? prev.humidity,
+          dewpoint: data.dewpoint_C ?? prev.dewpoint,
+          uvIndex: data.UV ?? prev.uvIndex,
+          solarRadiation: data.radiation_Wpm2 ?? prev.solarRadiation,
+          rainDay: data.dayRain_mm ?? prev.rainDay,
+          rainRate: data.rainRate_mm_per_hour ?? prev.rainRate,
+          lastUpdated: new Date(),
+        }));
+      } catch (err) {
+        console.error('Failed to parse weather JSON:', err);
       }
-      
-      return updated;
-    });
+    }
   }, []);
 
   useEffect(() => {
@@ -93,6 +77,8 @@ export const useMqttWeather = () => {
       
       try {
         client = mqtt.connect(MQTT_BROKER, {
+          username: MQTT_USERNAME,
+          password: MQTT_PASSWORD,
           reconnectPeriod: 5000,
           connectTimeout: 10000,
         });
@@ -116,7 +102,7 @@ export const useMqttWeather = () => {
         client.on('message', (topic, message) => {
           const value = message.toString();
           console.log(`MQTT: ${topic} = ${value}`);
-          updateWeatherField(topic, value);
+          updateWeatherData(topic, value);
         });
 
         client.on('error', (err) => {
@@ -148,7 +134,7 @@ export const useMqttWeather = () => {
         client.end();
       }
     };
-  }, [updateWeatherField]);
+  }, [updateWeatherData]);
 
   return { weatherData, isConnected, error };
 };
