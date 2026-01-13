@@ -145,24 +145,23 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
               <p className="stat-label">Styrka</p>
-              <p className="stat-value">{formatValue(speed)}</p>
+              <p className="text-3xl font-bold text-foreground">{formatValue(speed)} <span className="text-xl font-medium">kt</span></p>
             </div>
             <div>
               <p className="stat-label">Byvind</p>
-              <p className="stat-value">{formatValue(gust)}</p>
+              <p className="text-3xl font-bold text-foreground">{formatValue(gust)} <span className="text-xl font-medium">kt</span></p>
             </div>
           </div>
           
           <div className="grid grid-cols-2 gap-4 pt-3 border-t border-border/50">
             <div>
               <p className="stat-label">Riktning</p>
-              <p className="text-xl font-semibold text-foreground">{directionText}</p>
-              <p className="text-sm text-muted-foreground">{formatValue(direction, 0)}°</p>
+              <p className="text-3xl font-bold text-foreground">{formatValue(direction, 0)}°</p>
+              <p className="text-lg text-muted-foreground">{directionText}</p>
             </div>
             <div>
               <p className="stat-label">Vindstyrka</p>
-              <p className="text-foreground font-medium">{getWindStrength(speed)}</p>
-              <p className="text-sm text-muted-foreground">knop</p>
+              <p className="text-xl font-semibold text-foreground">{getWindStrength(speed)}</p>
             </div>
           </div>
         </div>
