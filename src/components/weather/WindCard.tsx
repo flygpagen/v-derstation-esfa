@@ -60,8 +60,88 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left side - Wind stats */}
-        <div className="flex flex-col justify-center">
+        {/* Runway visualization - shows first on mobile */}
+        <div className="flex flex-col order-first md:order-last">
+          <div className="flex justify-center mb-4">
+            <div className="relative w-48 h-48 md:w-40 md:h-40">
+              {/* Compass rose background */}
+              <div className="absolute inset-0 rounded-full border-2 border-border/30">
+                <span className="absolute top-1 left-1/2 -translate-x-1/2 text-sm md:text-xs font-medium text-muted-foreground">N</span>
+                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-sm md:text-xs font-medium text-muted-foreground">S</span>
+                <span className="absolute left-1 top-1/2 -translate-y-1/2 text-sm md:text-xs font-medium text-muted-foreground">V</span>
+                <span className="absolute right-1 top-1/2 -translate-y-1/2 text-sm md:text-xs font-medium text-muted-foreground">Ö</span>
+              </div>
+
+              {/* Runway strip */}
+              <div 
+                className="absolute left-1/2 top-1/2 w-3 md:w-2.5 h-32 md:h-28 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-muted-foreground/60"
+                style={{ transform: `translate(-50%, -50%) rotate(${RUNWAY_04}deg)` }}
+              >
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-5 md:w-4 h-1 bg-muted-foreground/80 rounded-sm" />
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-5 md:w-4 h-1 bg-muted-foreground/80 rounded-sm" />
+                
+                <span 
+                  className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm md:text-xs font-bold text-foreground"
+                  style={{ transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)` }}
+                >
+                  04
+                </span>
+                <span 
+                  className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-sm md:text-xs font-bold text-foreground"
+                  style={{ transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)` }}
+                >
+                  22
+                </span>
+              </div>
+
+              {/* Wind arrow */}
+              <div 
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                style={{ transform: `translate(-50%, -50%) rotate(${direction}deg)` }}
+              >
+                <div className="relative h-20 md:h-16 flex flex-col items-center">
+                  <div className="w-1 md:w-0.5 h-12 md:h-10 bg-primary" />
+                  <div 
+                    className="w-0 h-0 border-l-[6px] md:border-l-[5px] border-l-transparent border-r-[6px] md:border-r-[5px] border-r-transparent border-t-[10px] md:border-t-[8px] border-t-primary"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Wind components for each runway */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className={`text-center p-3 md:p-2 rounded-xl ${preferredRunway === '04' ? 'bg-primary/20 ring-1 ring-primary/30' : 'bg-secondary/50'}`}>
+              <p className="text-sm md:text-xs text-muted-foreground mb-0.5">Bana 04</p>
+              <p className={`text-lg md:text-base font-bold ${rwy04.headwind >= 0 ? 'text-green-500' : 'text-destructive'}`}>
+                {rwy04.headwind >= 0 ? '+' : ''}{formatValue(rwy04.headwind, 0)} kt
+              </p>
+              <p className="text-sm md:text-xs text-muted-foreground">{getWindLabel(rwy04.headwind)}</p>
+              <p className="text-sm md:text-xs text-foreground">
+                {formatValue(Math.abs(rwy04.crosswind), 0)} kt {getCrosswindLabel(rwy04.crosswind)}
+              </p>
+            </div>
+            <div className={`text-center p-3 md:p-2 rounded-xl ${preferredRunway === '22' ? 'bg-primary/20 ring-1 ring-primary/30' : 'bg-secondary/50'}`}>
+              <p className="text-sm md:text-xs text-muted-foreground mb-0.5">Bana 22</p>
+              <p className={`text-lg md:text-base font-bold ${rwy22.headwind >= 0 ? 'text-green-500' : 'text-destructive'}`}>
+                {rwy22.headwind >= 0 ? '+' : ''}{formatValue(rwy22.headwind, 0)} kt
+              </p>
+              <p className="text-sm md:text-xs text-muted-foreground">{getWindLabel(rwy22.headwind)}</p>
+              <p className="text-sm md:text-xs text-foreground">
+                {formatValue(Math.abs(rwy22.crosswind), 0)} kt {getCrosswindLabel(rwy22.crosswind)}
+              </p>
+            </div>
+          </div>
+
+          {/* Recommended runway */}
+          <div className="text-center pt-3 md:pt-2 mt-3 md:mt-2 border-t border-border/50">
+            <p className="text-sm md:text-xs text-muted-foreground">Rekommenderad bana</p>
+            <p className="text-2xl md:text-xl font-bold text-primary">{preferredRunway}</p>
+          </div>
+        </div>
+
+        {/* Wind stats - shows second on mobile */}
+        <div className="flex flex-col justify-center order-last md:order-first">
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
               <p className="stat-label">Styrka</p>
@@ -84,86 +164,6 @@ export const WindCard = ({ speed, gust, direction, directionText }: WindCardProp
               <p className="text-foreground font-medium">{getWindStrength(speed)}</p>
               <p className="text-sm text-muted-foreground">knop</p>
             </div>
-          </div>
-        </div>
-
-        {/* Right side - Runway visualization */}
-        <div className="flex flex-col">
-          <div className="flex justify-center mb-4">
-            <div className="relative w-36 h-36">
-              {/* Compass rose background */}
-              <div className="absolute inset-0 rounded-full border-2 border-border/30">
-                <span className="absolute top-0.5 left-1/2 -translate-x-1/2 text-xs font-medium text-muted-foreground">N</span>
-                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-xs font-medium text-muted-foreground">S</span>
-                <span className="absolute left-0.5 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground">V</span>
-                <span className="absolute right-0.5 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground">Ö</span>
-              </div>
-
-              {/* Runway strip */}
-              <div 
-                className="absolute left-1/2 top-1/2 w-2.5 h-24 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-muted-foreground/60"
-                style={{ transform: `translate(-50%, -50%) rotate(${RUNWAY_04}deg)` }}
-              >
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-muted-foreground/80 rounded-sm" />
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-muted-foreground/80 rounded-sm" />
-                
-                <span 
-                  className="absolute -top-5 left-1/2 -translate-x-1/2 text-xs font-bold text-foreground"
-                  style={{ transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)` }}
-                >
-                  04
-                </span>
-                <span 
-                  className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-xs font-bold text-foreground"
-                  style={{ transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)` }}
-                >
-                  22
-                </span>
-              </div>
-
-              {/* Wind arrow */}
-              <div 
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                style={{ transform: `translate(-50%, -50%) rotate(${direction}deg)` }}
-              >
-                <div className="relative h-16 flex flex-col items-center">
-                  <div className="w-0.5 h-10 bg-primary" />
-                  <div 
-                    className="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[8px] border-t-primary"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Wind components for each runway */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className={`text-center p-2 rounded-xl ${preferredRunway === '04' ? 'bg-primary/20 ring-1 ring-primary/30' : 'bg-secondary/50'}`}>
-              <p className="text-xs text-muted-foreground mb-0.5">Bana 04</p>
-              <p className={`text-base font-bold ${rwy04.headwind >= 0 ? 'text-green-500' : 'text-destructive'}`}>
-                {rwy04.headwind >= 0 ? '+' : ''}{formatValue(rwy04.headwind, 0)} kt
-              </p>
-              <p className="text-xs text-muted-foreground">{getWindLabel(rwy04.headwind)}</p>
-              <p className="text-xs text-foreground">
-                {formatValue(Math.abs(rwy04.crosswind), 0)} kt {getCrosswindLabel(rwy04.crosswind)}
-              </p>
-            </div>
-            <div className={`text-center p-2 rounded-xl ${preferredRunway === '22' ? 'bg-primary/20 ring-1 ring-primary/30' : 'bg-secondary/50'}`}>
-              <p className="text-xs text-muted-foreground mb-0.5">Bana 22</p>
-              <p className={`text-base font-bold ${rwy22.headwind >= 0 ? 'text-green-500' : 'text-destructive'}`}>
-                {rwy22.headwind >= 0 ? '+' : ''}{formatValue(rwy22.headwind, 0)} kt
-              </p>
-              <p className="text-xs text-muted-foreground">{getWindLabel(rwy22.headwind)}</p>
-              <p className="text-xs text-foreground">
-                {formatValue(Math.abs(rwy22.crosswind), 0)} kt {getCrosswindLabel(rwy22.crosswind)}
-              </p>
-            </div>
-          </div>
-
-          {/* Recommended runway */}
-          <div className="text-center pt-2 mt-2 border-t border-border/50">
-            <p className="text-xs text-muted-foreground">Rekommenderad bana</p>
-            <p className="text-xl font-bold text-primary">{preferredRunway}</p>
           </div>
         </div>
       </div>
