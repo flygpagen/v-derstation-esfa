@@ -1,6 +1,5 @@
 import { Gauge, Droplets, ThermometerSnowflake, Sun, Zap } from 'lucide-react';
 import { formatValue } from '@/lib/formatNumber';
-
 interface AtmosphereCardProps {
   barometer: number;
   humidity: number;
@@ -8,25 +7,22 @@ interface AtmosphereCardProps {
   uvIndex: number;
   solarRadiation: number;
 }
-
-export const AtmosphereCard = ({ 
-  barometer, 
-  humidity, 
-  dewpoint, 
-  uvIndex, 
-  solarRadiation 
+export const AtmosphereCard = ({
+  barometer,
+  humidity,
+  dewpoint,
+  uvIndex,
+  solarRadiation
 }: AtmosphereCardProps) => {
   // Calculate QNH and QFE (simplified approximation)
   const qnh = barometer - 1;
   const qfe = barometer - 5;
-
-  return (
-    <div className="glass-card p-6">
+  return <div className="glass-card p-6">
       <div className="flex items-start justify-between mb-6">
         <div className="p-2 rounded-xl bg-primary/10">
           <Gauge className="w-6 h-6 text-primary" />
         </div>
-        <span className="text-sm text-muted-foreground">Atmosfär</span>
+        <span className="text-muted-foreground text-lg">Atmosfär</span>
       </div>
 
       <div className="space-y-4">
@@ -81,6 +77,5 @@ export const AtmosphereCard = ({
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };

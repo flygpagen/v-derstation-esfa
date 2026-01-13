@@ -1,23 +1,24 @@
 import { Thermometer, TrendingUp, TrendingDown } from 'lucide-react';
 import { formatValue } from '@/lib/formatNumber';
-
 interface TemperatureCardProps {
   temperature: number;
   feelsLike: number;
   high: number;
   low: number;
 }
-
-export const TemperatureCard = ({ temperature, feelsLike, high, low }: TemperatureCardProps) => {
+export const TemperatureCard = ({
+  temperature,
+  feelsLike,
+  high,
+  low
+}: TemperatureCardProps) => {
   const isWarm = temperature > 15;
-  
-  return (
-    <div className="glass-card p-6 flex flex-col justify-between">
+  return <div className="glass-card p-6 flex flex-col justify-between">
       <div className="flex items-start justify-between">
         <div className="p-2 rounded-xl bg-primary/10">
           <Thermometer className="w-6 h-6 text-primary" />
         </div>
-        <span className="text-sm text-muted-foreground">Temperatur</span>
+        <span className="text-muted-foreground text-lg">Temperatur</span>
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center py-6">
@@ -46,6 +47,5 @@ export const TemperatureCard = ({ temperature, feelsLike, high, low }: Temperatu
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
