@@ -59,8 +59,8 @@ export const useMqttWeather = () => {
           ...prev,
           temperature: num(data.outTemp_C, prev.temperature),
           feelsLike: num(data.appTemp_C ?? data.windchill_C, prev.feelsLike),
-          windSpeed: num(data.windSpeed_knot, 0) * 0.514444, // Convert knots to m/s
-          windGust: num(data.windGust_knot, 0) * 0.514444, // Convert knots to m/s
+          windSpeed: num(data.windSpeed_knot, 0), // Keep in knots
+          windGust: num(data.windGust_knot, 0), // Keep in knots
           windDirection: windDir,
           windDirectionText: getWindDirection(windDir),
           barometer: num(data.barometer_mbar, prev.barometer),
