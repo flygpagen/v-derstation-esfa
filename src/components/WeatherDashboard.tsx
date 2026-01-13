@@ -4,7 +4,6 @@ import { AtmosphereCard } from './weather/AtmosphereCard';
 import { SunMoonCard } from './weather/SunMoonCard';
 import { WeatherHeader } from './weather/WeatherHeader';
 import { RainCard } from './weather/RainCard';
-import { CameraCard } from './weather/CameraCard';
 import { useWeatherContext } from '@/contexts/WeatherContext';
 
 export interface WeatherData {
@@ -50,16 +49,17 @@ export const WeatherDashboard = () => {
             directionText={weatherData.windDirectionText}
           />
           
-          {/* Main temperature */}
+          {/* Main temperature with camera */}
           <TemperatureCard 
             temperature={weatherData.temperature}
             feelsLike={weatherData.feelsLike}
             high={weatherData.tempHigh}
             low={weatherData.tempLow}
+            streamUrl="https://hfk1.hassleholmsflygklubb.se/axis-cgi/mjpg/video.cgi?streamprofile=weewx"
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Atmosphere readings */}
           <AtmosphereCard 
             barometer={weatherData.barometer}
@@ -81,12 +81,6 @@ export const WeatherDashboard = () => {
             sunset={weatherData.sunset}
             moonPhase={weatherData.moonPhase}
             moonVisibility={weatherData.moonVisibility}
-          />
-
-          {/* Camera stream */}
-          <CameraCard 
-            streamUrl="https://hfk1.hassleholmsflygklubb.se/axis-cgi/mjpg/video.cgi?streamprofile=weewx"
-            title="Webbkamera"
           />
         </div>
       </div>
