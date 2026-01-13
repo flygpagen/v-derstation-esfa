@@ -41,20 +41,20 @@ export const WeatherDashboard = () => {
         />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Combined Wind & Runway card - first on mobile, spans 2 columns */}
+          <WindCard 
+            speed={weatherData.windSpeed}
+            gust={weatherData.windGust}
+            direction={weatherData.windDirection}
+            directionText={weatherData.windDirectionText}
+          />
+          
           {/* Main temperature */}
           <TemperatureCard 
             temperature={weatherData.temperature}
             feelsLike={weatherData.feelsLike}
             high={weatherData.tempHigh}
             low={weatherData.tempLow}
-          />
-          
-          {/* Combined Wind & Runway card - spans 2 columns */}
-          <WindCard 
-            speed={weatherData.windSpeed}
-            gust={weatherData.windGust}
-            direction={weatherData.windDirection}
-            directionText={weatherData.windDirectionText}
           />
         </div>
 
