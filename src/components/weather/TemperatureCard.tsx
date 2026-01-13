@@ -1,4 +1,5 @@
 import { Thermometer, TrendingUp, TrendingDown } from 'lucide-react';
+import { formatValue } from '@/lib/formatNumber';
 
 interface TemperatureCardProps {
   temperature: number;
@@ -21,11 +22,11 @@ export const TemperatureCard = ({ temperature, feelsLike, high, low }: Temperatu
       
       <div className="flex-1 flex flex-col items-center justify-center py-6">
         <div className="temperature-display">
-          {temperature.toFixed(1)}
+          {formatValue(temperature)}
           <span className="text-4xl align-top">°C</span>
         </div>
         <p className="text-muted-foreground mt-2">
-          Känns som: <span className="text-foreground font-medium">{feelsLike.toFixed(1)} °C</span>
+          Känns som: <span className="text-foreground font-medium">{formatValue(feelsLike)} °C</span>
         </p>
       </div>
       
@@ -34,14 +35,14 @@ export const TemperatureCard = ({ temperature, feelsLike, high, low }: Temperatu
           <TrendingUp className="w-4 h-4 text-orange-400" />
           <div>
             <p className="stat-label">Högsta</p>
-            <p className="stat-value text-lg">{high.toFixed(1)}°</p>
+            <p className="stat-value text-lg">{formatValue(high)}°</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <TrendingDown className="w-4 h-4 text-blue-400" />
           <div>
             <p className="stat-label">Lägsta</p>
-            <p className="stat-value text-lg">{low.toFixed(1)}°</p>
+            <p className="stat-value text-lg">{formatValue(low)}°</p>
           </div>
         </div>
       </div>
