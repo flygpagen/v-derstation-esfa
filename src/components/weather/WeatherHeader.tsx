@@ -1,6 +1,7 @@
 import { CloudSun, History } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 
 interface WeatherHeaderProps {
   isConnected: boolean;
@@ -36,6 +37,8 @@ export const WeatherHeader = ({ isConnected, lastUpdated }: WeatherHeaderProps) 
       </div>
       
       <div className="flex items-center gap-3">
+        <ThemeSwitcher />
+        
         <Button variant="outline" asChild>
           <Link to="/historik" className="flex items-center gap-2">
             <History className="w-4 h-4" />
