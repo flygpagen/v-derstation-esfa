@@ -46,21 +46,30 @@ export const useMqttWeather = () => {
       try {
         const data = JSON.parse(message);
         
+        // Helper to safely parse numbers from string values
+        const num = (val: unknown, fallback: number = 0): number => {
+          if (val === null || val === undefined) return fallback;
+          const parsed = typeof val === 'string' ? parseFloat(val) : Number(val);
+          return isNaN(parsed) ? fallback : parsed;
+        };
+        
+        const windDir = num(data.windDir, 0);
+        
         setWeatherData(prev => ({
           ...prev,
-          temperature: data.outTemp_C ?? prev.temperature,
-          feelsLike: data.appTemp_C ?? data.windchill_C ?? prev.feelsLike,
-          windSpeed: (data.windSpeed_knot ?? 0) * 0.514444, // Convert knots to m/s
-          windGust: (data.windGust_knot ?? 0) * 0.514444, // Convert knots to m/s
-          windDirection: data.windDir ?? prev.windDirection,
-          windDirectionText: getWindDirection(data.windDir ?? prev.windDirection),
-          barometer: data.barometer_mbar ?? prev.barometer,
-          humidity: data.outHumidity ?? prev.humidity,
-          dewpoint: data.dewpoint_C ?? prev.dewpoint,
-          uvIndex: data.UV ?? prev.uvIndex,
-          solarRadiation: data.radiation_Wpm2 ?? prev.solarRadiation,
-          rainDay: data.dayRain_mm ?? prev.rainDay,
-          rainRate: data.rainRate_mm_per_hour ?? prev.rainRate,
+          temperature: num(data.outTemp_C, prev.temperature),
+          feelsLike: num(data.appTemp_C ?? data.windchill_C, prev.feelsLike),
+          windSpeed: num(data.windSpeed_knot, 0) * 0.514444, // Convert knots to m/s
+          windGust: num(data.windGust_knot, 0) * 0.514444, // Convert knots to m/s
+          windDirection: windDir,
+          windDirectionText: getWindDirection(windDir),
+          barometer: num(data.barometer_mbar, prev.barometer),
+          humidity: num(data.outHumidity, prev.humidity),
+          dewpoint: num(data.dewpoint_C, prev.dewpoint),
+          uvIndex: num(data.UV, prev.uvIndex),
+          solarRadiation: num(data.radiation_Wpm2, prev.solarRadiation),
+          rainDay: num(data.dayRain_mm, prev.rainDay),
+          rainRate: num(data.rainRate_mm_per_hour, prev.rainRate),
           lastUpdated: new Date(),
         }));
       } catch (err) {
