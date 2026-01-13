@@ -57,6 +57,52 @@
     --background: 220 25% 8%;
     --foreground: 210 40% 98%;
   }
+
+  .light {
+    --background: 210 40% 96%;
+    --foreground: 220 25% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 10%;
+
+    --primary: 199 89% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 30% 90%;
+    --secondary-foreground: 220 25% 10%;
+
+    --muted: 210 25% 88%;
+    --muted-foreground: 215 20% 40%;
+
+    --accent: 199 89% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 20% 85%;
+    --input: 210 20% 85%;
+    --ring: 199 89% 40%;
+
+    /* Custom weather tokens - light mode */
+    --weather-warm: 25 95% 48%;
+    --weather-cold: 199 89% 40%;
+    --weather-rain: 210 90% 50%;
+    --weather-sun: 45 93% 50%;
+    --weather-wind: 169 70% 40%;
+    
+    /* Glass effect - light mode */
+    --glass-bg: 0 0% 100% / 0.7;
+    --glass-border: 210 25% 85% / 0.5;
+    
+    /* Gradients - light mode */
+    --gradient-sky: linear-gradient(180deg, hsl(200 60% 88%) 0%, hsl(210 50% 94%) 50%, hsl(200 40% 97%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100% / 0.9) 0%, hsl(210 30% 98% / 0.8) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(199 89% 40%) 0%, hsl(185 80% 35%) 100%);
+  }
 }
 
 @layer base {

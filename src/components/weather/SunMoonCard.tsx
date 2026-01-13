@@ -1,6 +1,7 @@
 import { Sunrise, Sunset, Moon, CloudSun } from 'lucide-react';
 import { useMemo } from 'react';
 import SunCalc from 'suncalc';
+import { LATITUDE, LONGITUDE } from '@/lib/constants';
 
 interface SunMoonCardProps {
   sunrise: string;
@@ -8,10 +9,6 @@ interface SunMoonCardProps {
   moonPhase: string;
   moonVisibility: number;
 }
-
-// Vinslöv coordinates
-const LATITUDE = 56.10;
-const LONGITUDE = 13.92;
 
 const formatTime = (date: Date): string => {
   return date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
