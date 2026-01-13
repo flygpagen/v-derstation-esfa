@@ -1,6 +1,5 @@
 import { TemperatureCard } from './weather/TemperatureCard';
 import { WindCard } from './weather/WindCard';
-import { RunwayWindCard } from './weather/RunwayWindCard';
 import { AtmosphereCard } from './weather/AtmosphereCard';
 import { SunMoonCard } from './weather/SunMoonCard';
 import { WeatherHeader } from './weather/WeatherHeader';
@@ -42,7 +41,7 @@ export const WeatherDashboard = () => {
         />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main temperature - spans 1 column on large screens */}
+          {/* Main temperature */}
           <TemperatureCard 
             temperature={weatherData.temperature}
             feelsLike={weatherData.feelsLike}
@@ -50,14 +49,16 @@ export const WeatherDashboard = () => {
             low={weatherData.tempLow}
           />
           
-          {/* Wind card */}
+          {/* Combined Wind & Runway card - spans 2 columns */}
           <WindCard 
             speed={weatherData.windSpeed}
             gust={weatherData.windGust}
             direction={weatherData.windDirection}
             directionText={weatherData.windDirectionText}
           />
-          
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Atmosphere readings */}
           <AtmosphereCard 
             barometer={weatherData.barometer}
@@ -65,14 +66,6 @@ export const WeatherDashboard = () => {
             dewpoint={weatherData.dewpoint}
             uvIndex={weatherData.uvIndex}
             solarRadiation={weatherData.solarRadiation}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Runway wind */}
-          <RunwayWindCard 
-            windDirection={weatherData.windDirection}
-            windSpeed={weatherData.windSpeed}
           />
           
           {/* Rain data */}
