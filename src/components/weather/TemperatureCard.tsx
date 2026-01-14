@@ -1,4 +1,4 @@
-import { Thermometer, TrendingUp, TrendingDown } from 'lucide-react';
+import { Thermometer, TrendingUp, TrendingDown, ExternalLink } from 'lucide-react';
 import { formatValue } from '@/lib/formatNumber';
 
 interface TemperatureCardProps {
@@ -57,13 +57,16 @@ export const TemperatureCard = ({
           href="https://hlmfk.se/webbkameror"
           target="_blank"
           rel="noopener noreferrer"
-          className="relative aspect-video rounded-lg overflow-hidden bg-black/20 block hover:ring-2 hover:ring-primary/50 transition-all"
+          className="relative aspect-video rounded-lg overflow-hidden bg-black/20 block hover:ring-2 hover:ring-primary/50 transition-all group"
         >
           <img 
             src={streamUrl}
             alt="Webbkamera"
             className="w-full h-full object-cover"
           />
+          <div className="absolute top-2 right-2 bg-black/60 rounded-md p-1.5 opacity-70 group-hover:opacity-100 transition-opacity">
+            <ExternalLink className="w-4 h-4 text-white" />
+          </div>
         </a>
       )}
     </div>
