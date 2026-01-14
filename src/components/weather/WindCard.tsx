@@ -48,7 +48,7 @@ export const WindCard = ({
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
         <Wind className="w-5 h-5 text-primary animate-wind" />
-        <h3 className="text-foreground text-lg font-normal">Vind</h3>
+        <h3 className="section-title">Vind</h3>
       </div>
 
       {/* Section 1: Wind Conditions (compact row) */}
