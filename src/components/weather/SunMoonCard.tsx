@@ -95,17 +95,17 @@ export const SunMoonCard = ({
 
   // Calculate point on the quadratic Bezier curve (matching the SVG path)
   const getPointOnArc = (t: number) => {
-    // Control points matching the SVG path: M 15 65 Q 100 5 185 65
+    // Control points matching the SVG path: M 10 65 Q 150 5 290 65
     const P0 = {
-      x: 15,
+      x: 10,
       y: 65
     }; // Start point (dawn)
     const P1 = {
-      x: 100,
+      x: 150,
       y: 5
     }; // Control point (top)
     const P2 = {
-      x: 185,
+      x: 290,
       y: 65
     }; // End point (dusk)
 
@@ -141,7 +141,7 @@ export const SunMoonCard = ({
       <div className="space-y-4">
         {/* Sun path visualization */}
         <div className="w-full">
-          <svg viewBox="0 0 200 90" className="w-full h-28 rounded-xl">
+          <svg viewBox="0 0 300 90" className="w-full h-28 rounded-xl">
             <defs>
               {/* Sky gradient */}
               <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -162,14 +162,14 @@ export const SunMoonCard = ({
             </defs>
             
             {/* Sky background */}
-            <rect x="0" y="0" width="200" height="65" fill="url(#skyGradient)" rx="4" />
+            <rect x="0" y="0" width="300" height="65" fill="url(#skyGradient)" rx="4" />
             
             {/* Ground/horizon */}
-            <rect x="0" y="65" width="200" height="25" fill="url(#groundGradient)" rx="0" />
-            <line x1="0" y1="65" x2="200" y2="65" stroke="hsl(var(--border))" strokeWidth="1" strokeOpacity="0.5" />
+            <rect x="0" y="65" width="300" height="25" fill="url(#groundGradient)" rx="0" />
+            <line x1="0" y1="65" x2="300" y2="65" stroke="hsl(var(--border))" strokeWidth="1" strokeOpacity="0.5" />
             
             {/* Sun path arc (dashed) */}
-            <path d={`M ${dawnPoint.x} ${dawnPoint.y} Q 100 5 ${duskPoint.x} ${duskPoint.y}`} stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" fill="none" strokeOpacity="0.4" />
+            <path d={`M ${dawnPoint.x} ${dawnPoint.y} Q 150 5 ${duskPoint.x} ${duskPoint.y}`} stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" fill="none" strokeOpacity="0.4" />
             
             {/* Dawn point */}
             <circle cx={dawnPoint.x} cy={dawnPoint.y} r="4" fill="#818cf8" />
