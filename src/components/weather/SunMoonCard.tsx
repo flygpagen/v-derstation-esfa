@@ -1,4 +1,4 @@
-import { Sunrise, Sunset, Moon, CloudSun } from 'lucide-react';
+import { Sunrise, Sunset, Sun, CloudSun } from 'lucide-react';
 import { useMemo } from 'react';
 import SunCalc from 'suncalc';
 import { LATITUDE, LONGITUDE } from '@/lib/constants';
@@ -6,127 +6,174 @@ import { LATITUDE, LONGITUDE } from '@/lib/constants';
 interface SunMoonCardProps {
   sunrise: string;
   sunset: string;
-  moonPhase: string;
-  moonVisibility: number;
 }
 
 const formatTime = (date: Date): string => {
   return date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
 };
 
-export const SunMoonCard = ({ sunrise, sunset, moonPhase, moonVisibility }: SunMoonCardProps) => {
-  const { civilDawn, civilDusk, calculatedSunrise, calculatedSunset, moonIllumination, moonPhaseName } = useMemo(() => {
+export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
+  const { civilDawn, civilDusk, calculatedSunrise, calculatedSunset, dawnTime, sunriseTime, sunsetTime, duskTime, currentSunPosition } = useMemo(() => {
     const now = new Date();
     const times = SunCalc.getTimes(now, LATITUDE, LONGITUDE);
-    const moon = SunCalc.getMoonIllumination(now);
     
-    // Get moon phase name
-    const phase = moon.phase;
-    let phaseName = '';
-    if (phase < 0.03 || phase >= 0.97) phaseName = 'Nymåne';
-    else if (phase < 0.22) phaseName = 'Tilltagande skära';
-    else if (phase < 0.28) phaseName = 'Första kvarteret';
-    else if (phase < 0.47) phaseName = 'Tilltagande halv';
-    else if (phase < 0.53) phaseName = 'Fullmåne';
-    else if (phase < 0.72) phaseName = 'Avtagande halv';
-    else if (phase < 0.78) phaseName = 'Sista kvarteret';
-    else phaseName = 'Avtagande skära';
+    // Calculate sun position as percentage through the day (dawn to dusk)
+    const dawnMs = times.dawn.getTime();
+    const duskMs = times.dusk.getTime();
+    const nowMs = now.getTime();
+    
+    let sunPosition = 0;
+    if (nowMs < dawnMs) {
+      sunPosition = 0; // Before dawn
+    } else if (nowMs > duskMs) {
+      sunPosition = 1; // After dusk
+    } else {
+      sunPosition = (nowMs - dawnMs) / (duskMs - dawnMs);
+    }
     
     return {
       civilDawn: formatTime(times.dawn),
       civilDusk: formatTime(times.dusk),
       calculatedSunrise: formatTime(times.sunrise),
       calculatedSunset: formatTime(times.sunset),
-      moonIllumination: Math.round(moon.fraction * 100),
-      moonPhaseName: phaseName,
+      dawnTime: times.dawn,
+      sunriseTime: times.sunrise,
+      sunsetTime: times.sunset,
+      duskTime: times.dusk,
+      currentSunPosition: sunPosition,
     };
   }, []);
+
+  // Calculate relative positions on the curve (0-1)
+  const getRelativePosition = (time: Date) => {
+    const dawnMs = dawnTime.getTime();
+    const duskMs = duskTime.getTime();
+    return (time.getTime() - dawnMs) / (duskMs - dawnMs);
+  };
+
+  const sunrisePos = getRelativePosition(sunriseTime);
+  const sunsetPos = getRelativePosition(sunsetTime);
+
+  // Calculate X and Y on the arc (using a sine curve for the sun path)
+  const getPointOnArc = (t: number) => {
+    const x = 15 + t * 170; // From x=15 to x=185
+    const y = 65 - Math.sin(t * Math.PI) * 55; // Arc from y=65 up to y=10
+    return { x, y };
+  };
+
+  const dawnPoint = getPointOnArc(0);
+  const sunrisePoint = getPointOnArc(sunrisePos);
+  const sunsetPoint = getPointOnArc(sunsetPos);
+  const duskPoint = getPointOnArc(1);
+  const currentPoint = getPointOnArc(currentSunPosition);
 
   // Use MQTT data if available, otherwise use calculated values
   const displaySunrise = sunrise !== '--:--' ? sunrise : calculatedSunrise;
   const displaySunset = sunset !== '--:--' ? sunset : calculatedSunset;
-  const displayMoonPhase = moonPhase || moonPhaseName;
-  const displayMoonVisibility = moonVisibility || moonIllumination;
+
+  // Check if sun is currently above horizon
+  const isSunUp = currentSunPosition > 0 && currentSunPosition < 1;
 
   return (
     <div className="glass-card p-6">
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex items-start justify-between mb-4">
         <h3 className="section-title">
-          <Moon className="w-5 h-5 text-primary" />
-          Sol & Måne
+          <Sun className="w-5 h-5 text-primary" />
+          Sol
         </h3>
       </div>
 
-      <div className="flex items-center justify-between">
-        {/* Sun times */}
-        <div className="flex-1 space-y-3">
-          {/* Civil dawn */}
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-indigo-400/20 to-purple-400/20">
-              <CloudSun className="w-5 h-5 text-indigo-400" />
-            </div>
-            <div>
-              <p className="stat-label text-xs">Borgerlig gryning</p>
-              <p className="stat-value text-base">{civilDawn}</p>
-            </div>
-          </div>
-          
-          {/* Sunrise */}
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-orange-400/20 to-yellow-400/20">
-              <Sunrise className="w-5 h-5 text-orange-400" />
-            </div>
-            <div>
-              <p className="stat-label text-xs">Soluppgång</p>
-              <p className="stat-value text-base">{displaySunrise}</p>
-            </div>
-          </div>
-          
-          {/* Sunset */}
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-400/20">
-              <Sunset className="w-5 h-5 text-orange-500" />
-            </div>
-            <div>
-              <p className="stat-label text-xs">Solnedgång</p>
-              <p className="stat-value text-base">{displaySunset}</p>
-            </div>
-          </div>
-          
-          {/* Civil dusk */}
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-purple-400/20 to-indigo-400/20">
-              <CloudSun className="w-5 h-5 text-purple-400" />
-            </div>
-            <div>
-              <p className="stat-label text-xs">Borgerlig skymning</p>
-              <p className="stat-value text-base">{civilDusk}</p>
-            </div>
-          </div>
+      <div className="space-y-4">
+        {/* Sun path visualization */}
+        <div className="w-full">
+          <svg viewBox="0 0 200 90" className="w-full h-28">
+            <defs>
+              {/* Sky gradient */}
+              <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.1" />
+                <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.05" />
+              </linearGradient>
+              {/* Ground gradient */}
+              <linearGradient id="groundGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#22c55e" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#16a34a" stopOpacity="0.6" />
+              </linearGradient>
+              {/* Sun glow */}
+              <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#fbbf24" stopOpacity="1" />
+                <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#f59e0b" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            
+            {/* Sky background */}
+            <rect x="0" y="0" width="200" height="65" fill="url(#skyGradient)" rx="4" />
+            
+            {/* Ground/horizon */}
+            <rect x="0" y="65" width="200" height="25" fill="url(#groundGradient)" rx="0" />
+            <line x1="0" y1="65" x2="200" y2="65" stroke="hsl(var(--border))" strokeWidth="1" strokeOpacity="0.5" />
+            
+            {/* Sun path arc (dashed) */}
+            <path 
+              d={`M ${dawnPoint.x} ${dawnPoint.y} Q 100 5 ${duskPoint.x} ${duskPoint.y}`}
+              stroke="hsl(var(--muted-foreground))"
+              strokeWidth="1.5"
+              strokeDasharray="4 3"
+              fill="none"
+              strokeOpacity="0.4"
+            />
+            
+            {/* Dawn point */}
+            <circle cx={dawnPoint.x} cy={dawnPoint.y} r="4" fill="#818cf8" />
+            <text x={dawnPoint.x} y={dawnPoint.y + 12} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+              {civilDawn}
+            </text>
+            
+            {/* Sunrise point */}
+            <circle cx={sunrisePoint.x} cy={sunrisePoint.y} r="4" fill="#f97316" />
+            <text x={sunrisePoint.x} y={sunrisePoint.y - 8} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+              {displaySunrise}
+            </text>
+            
+            {/* Sunset point */}
+            <circle cx={sunsetPoint.x} cy={sunsetPoint.y} r="4" fill="#f97316" />
+            <text x={sunsetPoint.x} y={sunsetPoint.y - 8} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+              {displaySunset}
+            </text>
+            
+            {/* Dusk point */}
+            <circle cx={duskPoint.x} cy={duskPoint.y} r="4" fill="#a78bfa" />
+            <text x={duskPoint.x} y={duskPoint.y + 12} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+              {civilDusk}
+            </text>
+            
+            {/* Current sun position */}
+            {isSunUp && (
+              <>
+                <circle cx={currentPoint.x} cy={currentPoint.y} r="12" fill="url(#sunGlow)" />
+                <circle cx={currentPoint.x} cy={currentPoint.y} r="6" fill="#fbbf24" />
+              </>
+            )}
+          </svg>
         </div>
 
-        {/* Moon */}
-        <div className="flex-1 flex flex-col items-center">
-          <div className="relative">
-            {/* Moon visualization */}
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-slate-200 to-slate-400 relative overflow-hidden animate-float">
-              {/* Shadow for moon phase */}
-              <div 
-                className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-900/90"
-                style={{ 
-                  transform: `translateX(${50 - displayMoonVisibility}%)`,
-                }}
-              />
-              {/* Craters */}
-              <div className="absolute w-4 h-4 rounded-full bg-slate-300/50 top-3 left-3" />
-              <div className="absolute w-3 h-3 rounded-full bg-slate-300/50 bottom-4 right-5" />
-              <div className="absolute w-2 h-2 rounded-full bg-slate-300/50 top-8 left-8" />
-            </div>
+        {/* Legend */}
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-indigo-400" />
+            <span className="text-muted-foreground">Borgerlig gryning</span>
           </div>
-          
-          <div className="text-center mt-4">
-            <p className="font-medium text-foreground">{displayMoonPhase}</p>
-            <p className="text-sm text-muted-foreground">{displayMoonVisibility}% synlig</p>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-orange-500" />
+            <span className="text-muted-foreground">Soluppgång</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-orange-500" />
+            <span className="text-muted-foreground">Solnedgång</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-purple-400" />
+            <span className="text-muted-foreground">Borgerlig skymning</span>
           </div>
         </div>
       </div>
