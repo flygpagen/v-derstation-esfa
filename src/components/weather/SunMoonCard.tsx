@@ -83,10 +83,18 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
   const sunrisePos = getRelativePosition(sunriseTime);
   const sunsetPos = getRelativePosition(sunsetTime);
 
-  // Calculate X and Y on the arc (using a sine curve for the sun path)
+  // Calculate point on the quadratic Bezier curve (matching the SVG path)
   const getPointOnArc = (t: number) => {
-    const x = 15 + t * 170; // From x=15 to x=185
-    const y = 65 - Math.sin(t * Math.PI) * 55; // Arc from y=65 up to y=10
+    // Control points matching the SVG path: M 15 65 Q 100 5 185 65
+    const P0 = { x: 15, y: 65 };   // Start point (dawn)
+    const P1 = { x: 100, y: 5 };   // Control point (top)
+    const P2 = { x: 185, y: 65 };  // End point (dusk)
+    
+    // Quadratic Bezier formula: B(t) = (1-t)²·P0 + 2(1-t)t·P1 + t²·P2
+    const oneMinusT = 1 - t;
+    const x = oneMinusT * oneMinusT * P0.x + 2 * oneMinusT * t * P1.x + t * t * P2.x;
+    const y = oneMinusT * oneMinusT * P0.y + 2 * oneMinusT * t * P1.y + t * t * P2.y;
+    
     return { x, y };
   };
 
