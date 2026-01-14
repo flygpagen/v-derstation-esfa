@@ -6,7 +6,7 @@ interface AtmosphereCardProps {
   dewpoint: number;
   uvIndex: number;
   solarRadiation: number;
-  temperature: number;
+  cloudBase: number;
 }
 export const AtmosphereCard = ({
   barometer,
@@ -14,15 +14,15 @@ export const AtmosphereCard = ({
   dewpoint,
   uvIndex,
   solarRadiation,
-  temperature
+  cloudBase
 }: AtmosphereCardProps) => {
   // Calculate QNH and QFE (simplified approximation)
   const qnh = barometer - 1;
   const qfe = barometer - 5;
   
-  // Calculate cloud base (feet) - 1 meter = 3.28084 feet
-  const cloudBaseMeters = (temperature - dewpoint) * 400;
-  const cloudBaseFeet = cloudBaseMeters * 3.28084;
+  // Convert cloud base from meters to feet
+  const cloudBaseFeet = cloudBase * 3.28084;
+
   return <div className="glass-card p-6">
       <div className="flex items-start justify-between mb-6">
         <h3 className="section-title">
