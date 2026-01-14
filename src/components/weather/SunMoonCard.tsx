@@ -1,4 +1,4 @@
-import { Sunrise, Sunset, Sun, CloudSun } from 'lucide-react';
+import { Sunrise, Sunset, Sun, CloudSun, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { useMemo } from 'react';
 import SunCalc from 'suncalc';
 import { LATITUDE, LONGITUDE } from '@/lib/constants';
@@ -12,10 +12,37 @@ const formatTime = (date: Date): string => {
   return date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
 };
 
+const formatDuration = (minutes: number): string => {
+  const hours = Math.floor(minutes / 60);
+  const mins = Math.round(minutes % 60);
+  return `${hours}h ${mins}m`;
+};
+
+const formatDifference = (minutes: number): string => {
+  const sign = minutes >= 0 ? '+' : '';
+  const absMinutes = Math.abs(minutes);
+  if (absMinutes < 60) {
+    return `${sign}${Math.round(minutes)}m`;
+  }
+  const hours = Math.floor(absMinutes / 60);
+  const mins = Math.round(absMinutes % 60);
+  return `${sign}${minutes >= 0 ? '' : '-'}${hours}h ${mins}m`;
+};
+
 export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
-  const { civilDawn, civilDusk, calculatedSunrise, calculatedSunset, dawnTime, sunriseTime, sunsetTime, duskTime, currentSunPosition } = useMemo(() => {
+  const { civilDawn, civilDusk, calculatedSunrise, calculatedSunset, dawnTime, sunriseTime, sunsetTime, duskTime, currentSunPosition, dayLength, dayLengthDiff } = useMemo(() => {
     const now = new Date();
     const times = SunCalc.getTimes(now, LATITUDE, LONGITUDE);
+    
+    // Calculate yesterday's times for comparison
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayTimes = SunCalc.getTimes(yesterday, LATITUDE, LONGITUDE);
+    
+    // Calculate day length in minutes
+    const todayDayLength = (times.sunset.getTime() - times.sunrise.getTime()) / 60000;
+    const yesterdayDayLength = (yesterdayTimes.sunset.getTime() - yesterdayTimes.sunrise.getTime()) / 60000;
+    const diff = todayDayLength - yesterdayDayLength;
     
     // Calculate sun position as percentage through the day (dawn to dusk)
     const dawnMs = times.dawn.getTime();
@@ -41,6 +68,8 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
       sunsetTime: times.sunset,
       duskTime: times.dusk,
       currentSunPosition: sunPosition,
+      dayLength: todayDayLength,
+      dayLengthDiff: diff,
     };
   }, []);
 
@@ -155,6 +184,27 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
               </>
             )}
           </svg>
+        </div>
+
+        {/* Day length display */}
+        <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
+          <div className="flex items-center gap-2">
+            <Sun className="w-4 h-4 text-amber-500" />
+            <span className="text-sm text-muted-foreground">Dagslängd</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-foreground">{formatDuration(dayLength)}</span>
+            <div className={`flex items-center gap-0.5 text-xs ${dayLengthDiff > 0 ? 'text-green-500' : dayLengthDiff < 0 ? 'text-red-500' : 'text-muted-foreground'}`}>
+              {dayLengthDiff > 0 ? (
+                <TrendingUp className="w-3 h-3" />
+              ) : dayLengthDiff < 0 ? (
+                <TrendingDown className="w-3 h-3" />
+              ) : (
+                <Minus className="w-3 h-3" />
+              )}
+              <span>{formatDifference(dayLengthDiff)}</span>
+            </div>
+          </div>
         </div>
 
         {/* Legend */}
