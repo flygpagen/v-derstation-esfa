@@ -34,17 +34,17 @@ export const AtmosphereCard = ({
         {/* Pressure readings */}
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center p-3 rounded-xl bg-secondary/50">
-            <p className="stat-label">BARO</p>
+            <p className="stat-label">1006</p>
             <p className="stat-value text-base">{formatValue(barometer, 0)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
           <div className="text-center p-3 rounded-xl bg-secondary/50">
-            <p className="stat-label">QNH</p>
+            <p className="stat-label">1005</p>
             <p className="stat-value text-base">{formatValue(qnh, 0)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
           <div className="text-center p-3 rounded-xl bg-secondary/50">
-            <p className="stat-label">QFE</p>
+            <p className="stat-label">1001</p>
             <p className="stat-value text-base">{formatValue(qfe, 0)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
