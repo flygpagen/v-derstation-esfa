@@ -35,7 +35,7 @@ export const AtmosphereCard = ({
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center p-3 rounded-xl bg-secondary/50">
             <p className="stat-label">BARO</p>
-            <p className="stat-value text-base">{formatValue(barometer, 0)}</p>
+            <p className="stat-value text-base">{Math.round(barometer)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
           <div className="text-center p-3 rounded-xl bg-secondary/50">
