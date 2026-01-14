@@ -220,21 +220,33 @@ export const SunMoonCard = ({
 
         {/* Legend */}
         <div className="grid grid-cols-2 gap-2 text-xs">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-indigo-400" />
-            <span className="text-muted-foreground">Borgerlig gryning</span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-indigo-400" />
+              <span className="text-muted-foreground">Borgerlig gryning</span>
+            </div>
+            <span className="font-medium text-foreground">{civilDawn}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-orange-500" />
-            <span className="text-muted-foreground">Soluppgång</span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-orange-500" />
+              <span className="text-muted-foreground">Soluppgång</span>
+            </div>
+            <span className="font-medium text-foreground">{displaySunrise}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-orange-500" />
-            <span className="text-muted-foreground">Solnedgång</span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-orange-500" />
+              <span className="text-muted-foreground">Solnedgång</span>
+            </div>
+            <span className="font-medium text-foreground">{displaySunset}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-purple-400" />
-            <span className="text-muted-foreground">Borgerlig skymning</span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-purple-400" />
+              <span className="text-muted-foreground">Borgerlig skymning</span>
+            </div>
+            <span className="font-medium text-foreground">{civilDusk}</span>
           </div>
         </div>
       </div>
