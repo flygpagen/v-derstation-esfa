@@ -9,6 +9,15 @@ export const RainCard = ({
   rainRate
 }: RainCardProps) => {
   const isRaining = rainRate > 0;
+  
+  // Dynamic scale - at least 10 mm, otherwise round up to nearest 10
+  const maxScale = Math.max(10, Math.ceil(rainDay / 10) * 10);
+  
+  // Create 6 scale marks from maxScale down to 0
+  const scaleMarks = Array.from({ length: 6 }, (_, i) => 
+    Math.round((maxScale / 5) * (5 - i))
+  );
+  
   return <div className="glass-card p-6">
       <div className="flex items-start justify-between mb-6">
         <h3 className="section-title">
@@ -23,7 +32,7 @@ export const RainCard = ({
           <div className="h-32 w-full rounded-xl bg-secondary/50 relative overflow-hidden">
             {/* Water level */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500/60 to-blue-400/40 transition-all duration-1000" style={{
-            height: `${Math.min(rainDay * 10, 100)}%`
+            height: `${Math.min((rainDay / maxScale) * 100, 100)}%`
           }}>
               {/* Ripple effect */}
               {isRaining && <>
@@ -34,9 +43,9 @@ export const RainCard = ({
             
             {/* Measurement lines */}
             <div className="absolute inset-0 flex flex-col justify-between p-2 pointer-events-none">
-              {[10, 8, 6, 4, 2, 0].map(val => <div key={val} className="flex items-center gap-1">
+              {scaleMarks.map(val => <div key={val} className="flex items-center gap-1">
                   <div className="w-full h-px bg-border/30" />
-                  <span className="text-[10px] text-muted-foreground w-6">{val}</span>
+                  <span className="text-[10px] text-muted-foreground w-8">{val}</span>
                 </div>)}
             </div>
           </div>
