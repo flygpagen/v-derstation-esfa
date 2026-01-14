@@ -19,10 +19,9 @@ export const AtmosphereCard = ({
   // Calculate QNH and QFE (simplified approximation)
   const qnh = barometer - 1;
   const qfe = barometer - 5;
-  
+
   // Convert cloud base from meters to feet
   const cloudBaseFeet = cloudBase * 3.28084;
-
   return <div className="glass-card p-6">
       <div className="flex items-start justify-between mb-6">
         <h3 className="section-title">
@@ -35,7 +34,7 @@ export const AtmosphereCard = ({
         {/* Pressure readings */}
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center p-3 rounded-xl bg-secondary/50">
-            <p className="stat-label">Barometer</p>
+            <p className="stat-label">BARO</p>
             <p className="stat-value text-base">{formatValue(barometer, 0)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
