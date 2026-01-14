@@ -2,13 +2,14 @@ import { CloudSun, History } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-
 interface WeatherHeaderProps {
   isConnected: boolean;
   lastUpdated: Date;
 }
-
-export const WeatherHeader = ({ isConnected, lastUpdated }: WeatherHeaderProps) => {
+export const WeatherHeader = ({
+  isConnected,
+  lastUpdated
+}: WeatherHeaderProps) => {
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('sv-SE', {
       day: 'numeric',
@@ -16,12 +17,10 @@ export const WeatherHeader = ({ isConnected, lastUpdated }: WeatherHeaderProps) 
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
+      second: '2-digit'
     });
   };
-
-  return (
-    <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+  return <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div className="flex items-center gap-4">
         <div className="p-3 glass-card">
           <CloudSun className="w-8 h-8 text-primary" />
@@ -30,9 +29,7 @@ export const WeatherHeader = ({ isConnected, lastUpdated }: WeatherHeaderProps) 
           <h1 className="text-2xl md:text-3xl font-semibold text-foreground">
             Aktuellt väder
           </h1>
-          <p className="text-muted-foreground text-sm">
-            Väderstation Dashboard
-          </p>
+          <p className="text-muted-foreground text-sm">ESFA Hässleholms flygklubb</p>
         </div>
       </div>
       
@@ -53,6 +50,5 @@ export const WeatherHeader = ({ isConnected, lastUpdated }: WeatherHeaderProps) 
           </span>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
