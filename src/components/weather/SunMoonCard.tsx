@@ -2,22 +2,21 @@ import { Sunrise, Sunset, Sun, CloudSun, TrendingUp, TrendingDown, Minus } from 
 import { useMemo } from 'react';
 import SunCalc from 'suncalc';
 import { LATITUDE, LONGITUDE } from '@/lib/constants';
-
 interface SunMoonCardProps {
   sunrise: string;
   sunset: string;
 }
-
 const formatTime = (date: Date): string => {
-  return date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+  return date.toLocaleTimeString('sv-SE', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
 };
-
 const formatDuration = (minutes: number): string => {
   const hours = Math.floor(minutes / 60);
   const mins = Math.round(minutes % 60);
   return `${hours}h ${mins}m`;
 };
-
 const formatDifference = (minutes: number): string => {
   const sign = minutes >= 0 ? '+' : '';
   const absMinutes = Math.abs(minutes);
@@ -28,27 +27,40 @@ const formatDifference = (minutes: number): string => {
   const mins = Math.round(absMinutes % 60);
   return `${sign}${minutes >= 0 ? '' : '-'}${hours}h ${mins}m`;
 };
-
-export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
-  const { civilDawn, civilDusk, calculatedSunrise, calculatedSunset, dawnTime, sunriseTime, sunsetTime, duskTime, currentSunPosition, dayLength, dayLengthDiff } = useMemo(() => {
+export const SunMoonCard = ({
+  sunrise,
+  sunset
+}: SunMoonCardProps) => {
+  const {
+    civilDawn,
+    civilDusk,
+    calculatedSunrise,
+    calculatedSunset,
+    dawnTime,
+    sunriseTime,
+    sunsetTime,
+    duskTime,
+    currentSunPosition,
+    dayLength,
+    dayLengthDiff
+  } = useMemo(() => {
     const now = new Date();
     const times = SunCalc.getTimes(now, LATITUDE, LONGITUDE);
-    
+
     // Calculate yesterday's times for comparison
     const yesterday = new Date(now);
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayTimes = SunCalc.getTimes(yesterday, LATITUDE, LONGITUDE);
-    
+
     // Calculate day length in minutes
     const todayDayLength = (times.sunset.getTime() - times.sunrise.getTime()) / 60000;
     const yesterdayDayLength = (yesterdayTimes.sunset.getTime() - yesterdayTimes.sunrise.getTime()) / 60000;
     const diff = todayDayLength - yesterdayDayLength;
-    
+
     // Calculate sun position as percentage through the day (dawn to dusk)
     const dawnMs = times.dawn.getTime();
     const duskMs = times.dusk.getTime();
     const nowMs = now.getTime();
-    
     let sunPosition = 0;
     if (nowMs < dawnMs) {
       sunPosition = 0; // Before dawn
@@ -57,7 +69,6 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
     } else {
       sunPosition = (nowMs - dawnMs) / (duskMs - dawnMs);
     }
-    
     return {
       civilDawn: formatTime(times.dawn),
       civilDusk: formatTime(times.dusk),
@@ -69,7 +80,7 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
       duskTime: times.dusk,
       currentSunPosition: sunPosition,
       dayLength: todayDayLength,
-      dayLengthDiff: diff,
+      dayLengthDiff: diff
     };
   }, []);
 
@@ -79,25 +90,34 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
     const duskMs = duskTime.getTime();
     return (time.getTime() - dawnMs) / (duskMs - dawnMs);
   };
-
   const sunrisePos = getRelativePosition(sunriseTime);
   const sunsetPos = getRelativePosition(sunsetTime);
 
   // Calculate point on the quadratic Bezier curve (matching the SVG path)
   const getPointOnArc = (t: number) => {
     // Control points matching the SVG path: M 15 65 Q 100 5 185 65
-    const P0 = { x: 15, y: 65 };   // Start point (dawn)
-    const P1 = { x: 100, y: 5 };   // Control point (top)
-    const P2 = { x: 185, y: 65 };  // End point (dusk)
-    
+    const P0 = {
+      x: 15,
+      y: 65
+    }; // Start point (dawn)
+    const P1 = {
+      x: 100,
+      y: 5
+    }; // Control point (top)
+    const P2 = {
+      x: 185,
+      y: 65
+    }; // End point (dusk)
+
     // Quadratic Bezier formula: B(t) = (1-t)²·P0 + 2(1-t)t·P1 + t²·P2
     const oneMinusT = 1 - t;
     const x = oneMinusT * oneMinusT * P0.x + 2 * oneMinusT * t * P1.x + t * t * P2.x;
     const y = oneMinusT * oneMinusT * P0.y + 2 * oneMinusT * t * P1.y + t * t * P2.y;
-    
-    return { x, y };
+    return {
+      x,
+      y
+    };
   };
-
   const dawnPoint = getPointOnArc(0);
   const sunrisePoint = getPointOnArc(sunrisePos);
   const sunsetPoint = getPointOnArc(sunsetPos);
@@ -110,9 +130,7 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
 
   // Check if sun is currently above horizon
   const isSunUp = currentSunPosition > 0 && currentSunPosition < 1;
-
-  return (
-    <div className="glass-card p-6">
+  return <div className="glass-card p-6">
       <div className="flex items-start justify-between mb-4">
         <h3 className="section-title">
           <Sun className="w-5 h-5 text-primary" />
@@ -123,7 +141,7 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
       <div className="space-y-4">
         {/* Sun path visualization */}
         <div className="w-full">
-          <svg viewBox="0 0 200 90" className="w-full h-28">
+          <svg viewBox="0 0 200 90" className="w-full h-28 rounded-xl">
             <defs>
               {/* Sky gradient */}
               <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -151,14 +169,7 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
             <line x1="0" y1="65" x2="200" y2="65" stroke="hsl(var(--border))" strokeWidth="1" strokeOpacity="0.5" />
             
             {/* Sun path arc (dashed) */}
-            <path 
-              d={`M ${dawnPoint.x} ${dawnPoint.y} Q 100 5 ${duskPoint.x} ${duskPoint.y}`}
-              stroke="hsl(var(--muted-foreground))"
-              strokeWidth="1.5"
-              strokeDasharray="4 3"
-              fill="none"
-              strokeOpacity="0.4"
-            />
+            <path d={`M ${dawnPoint.x} ${dawnPoint.y} Q 100 5 ${duskPoint.x} ${duskPoint.y}`} stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" fill="none" strokeOpacity="0.4" />
             
             {/* Dawn point */}
             <circle cx={dawnPoint.x} cy={dawnPoint.y} r="4" fill="#818cf8" />
@@ -185,12 +196,10 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
             </text>
             
             {/* Current sun position */}
-            {isSunUp && (
-              <>
+            {isSunUp && <>
                 <circle cx={currentPoint.x} cy={currentPoint.y} r="12" fill="url(#sunGlow)" />
                 <circle cx={currentPoint.x} cy={currentPoint.y} r="6" fill="#fbbf24" />
-              </>
-            )}
+              </>}
           </svg>
         </div>
 
@@ -203,13 +212,7 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
           <div className="flex items-center gap-2">
             <span className="font-semibold text-foreground">{formatDuration(dayLength)}</span>
             <div className={`flex items-center gap-0.5 text-xs ${dayLengthDiff > 0 ? 'text-green-500' : dayLengthDiff < 0 ? 'text-red-500' : 'text-muted-foreground'}`}>
-              {dayLengthDiff > 0 ? (
-                <TrendingUp className="w-3 h-3" />
-              ) : dayLengthDiff < 0 ? (
-                <TrendingDown className="w-3 h-3" />
-              ) : (
-                <Minus className="w-3 h-3" />
-              )}
+              {dayLengthDiff > 0 ? <TrendingUp className="w-3 h-3" /> : dayLengthDiff < 0 ? <TrendingDown className="w-3 h-3" /> : <Minus className="w-3 h-3" />}
               <span>{formatDifference(dayLengthDiff)}</span>
             </div>
           </div>
@@ -235,6 +238,5 @@ export const SunMoonCard = ({ sunrise, sunset }: SunMoonCardProps) => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
