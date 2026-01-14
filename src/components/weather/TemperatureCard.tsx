@@ -53,13 +53,18 @@ export const TemperatureCard = ({
       
       {/* Camera stream */}
       {streamUrl && (
-        <div className="relative aspect-video rounded-lg overflow-hidden bg-black/20">
+        <a 
+          href="https://hlmfk.se/webbkameror"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative aspect-video rounded-lg overflow-hidden bg-black/20 block hover:ring-2 hover:ring-primary/50 transition-all"
+        >
           <img 
             src={streamUrl}
             alt="Webbkamera"
             className="w-full h-full object-cover"
           />
-        </div>
+        </a>
       )}
     </div>
   );
