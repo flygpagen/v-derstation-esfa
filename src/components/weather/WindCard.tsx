@@ -115,8 +115,8 @@ export const WindCard = ({
       </div>
 
       {/* Section 3: Recommended Runway (decision zone) */}
-      <div className="flex items-center justify-between pt-4 border-t border-border/30">
-        <span className="text-sm text-muted-foreground">Rekommenderad bana</span>
+      <div className="items-center justify-between pt-4 border-t border-border/30 flex flex-row">
+        <span className="text-muted-foreground text-lg">Rekommenderad bana</span>
         <div className="flex items-center gap-3">
           <span className="text-3xl font-bold text-primary">{preferredRunway}</span>
           <div className="text-xs text-muted-foreground text-right">
