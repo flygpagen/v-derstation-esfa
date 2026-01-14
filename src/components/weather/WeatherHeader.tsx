@@ -1,4 +1,5 @@
-import { CloudSun, History } from 'lucide-react';
+import { History } from 'lucide-react';
+import flygklubbLogo from '@/assets/flygklubb-logo.png';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
@@ -22,8 +23,8 @@ export const WeatherHeader = ({
   };
   return <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div className="flex items-center gap-4">
-        <div className="p-3 glass-card">
-          <CloudSun className="w-8 h-8 text-primary" />
+        <div className="p-1 glass-card">
+          <img src={flygklubbLogo} alt="Hässleholms Flygklubb" className="w-10 h-10 rounded" />
         </div>
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold text-foreground">
