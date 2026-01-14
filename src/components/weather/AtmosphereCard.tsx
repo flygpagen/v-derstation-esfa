@@ -76,7 +76,7 @@ export const AtmosphereCard = ({
           <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
             <Zap className="w-5 h-5 text-amber-400" />
             <div>
-              <p className="stat-label">Solinstrålning</p>
+              <p className="stat-label">SOLENERGI</p>
               <p className="font-semibold">{formatValue(solarRadiation, 0)} W/m²</p>
             </div>
           </div>
