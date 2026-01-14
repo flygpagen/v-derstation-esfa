@@ -20,6 +20,7 @@ export interface WeatherData {
   dewpoint: number;
   uvIndex: number;
   solarRadiation: number;
+  cloudBase: number;
   rainDay: number;
   rainRate: number;
   sunrise: string;
@@ -67,7 +68,7 @@ export const WeatherDashboard = () => {
             dewpoint={weatherData.dewpoint}
             uvIndex={weatherData.uvIndex}
             solarRadiation={weatherData.solarRadiation}
-            temperature={weatherData.temperature}
+            cloudBase={weatherData.cloudBase}
           />
           
           {/* Rain data */}
