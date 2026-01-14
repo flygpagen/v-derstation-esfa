@@ -40,12 +40,12 @@ export const AtmosphereCard = ({
           </div>
           <div className="text-center p-3 rounded-xl bg-secondary/50">
             <p className="stat-label">QNH</p>
-            <p className="stat-value text-base">{formatValue(qnh, 0)}</p>
+            <p className="stat-value text-base">{Math.round(qnh)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
           <div className="text-center p-3 rounded-xl bg-secondary/50">
             <p className="stat-label">QFE</p>
-            <p className="stat-value text-base">{formatValue(qfe, 0)}</p>
+            <p className="stat-value text-base">{Math.round(qfe)}</p>
             <p className="text-xs text-muted-foreground">hPa</p>
           </div>
         </div>
