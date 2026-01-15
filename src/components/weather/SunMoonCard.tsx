@@ -168,8 +168,8 @@ export const SunMoonCard = ({
             <rect x="0" y="65" width="300" height="25" fill="url(#groundGradient)" rx="0" />
             <line x1="0" y1="65" x2="300" y2="65" stroke="hsl(var(--border))" strokeWidth="1" strokeOpacity="0.5" />
             
-            {/* Sun path arc (dashed) */}
-            <path d={`M ${dawnPoint.x} ${dawnPoint.y} Q 150 5 ${duskPoint.x} ${duskPoint.y}`} stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" fill="none" strokeOpacity="0.4" />
+            {/* Sun path arc (dashed) - starts and ends at horizon */}
+            <path d={`M ${dawnPoint.x} 65 Q 150 5 ${duskPoint.x} 65`} stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" fill="none" strokeOpacity="0.4" />
             
             {/* Dawn point - below horizon */}
             <circle cx={dawnPoint.x} cy={75} r="4" fill="#818cf8" />
