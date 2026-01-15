@@ -93,36 +93,50 @@ export const SunMoonCard = ({
   const sunrisePos = getRelativePosition(sunriseTime);
   const sunsetPos = getRelativePosition(sunsetTime);
 
-  // Calculate point on the quadratic Bezier curve (matching the SVG path)
-  const getPointOnArc = (t: number) => {
-    // Control points matching the SVG path: M 10 65 Q 150 5 290 65
-    const P0 = {
-      x: 10,
-      y: 65
-    }; // Start point (dawn)
-    const P1 = {
-      x: 150,
-      y: 5
-    }; // Control point (top)
-    const P2 = {
-      x: 290,
-      y: 65
-    }; // End point (dusk)
+  // Fixed positions for key points
+  const horizonY = 65;
+  const belowHorizonY = 78;
+  
+  // Dawn and dusk are below horizon, sunrise and sunset are on horizon
+  const dawnPoint = { x: 10, y: belowHorizonY };
+  const sunrisePoint = { x: 10 + sunrisePos * 280, y: horizonY };
+  const sunsetPoint = { x: 10 + sunsetPos * 280, y: horizonY };
+  const duskPoint = { x: 290, y: belowHorizonY };
 
-    // Quadratic Bezier formula: B(t) = (1-t)²·P0 + 2(1-t)t·P1 + t²·P2
-    const oneMinusT = 1 - t;
-    const x = oneMinusT * oneMinusT * P0.x + 2 * oneMinusT * t * P1.x + t * t * P2.x;
-    const y = oneMinusT * oneMinusT * P0.y + 2 * oneMinusT * t * P1.y + t * t * P2.y;
-    return {
-      x,
-      y
-    };
+  // Calculate point on the sun path for current position
+  const getPointOnPath = (t: number) => {
+    // The path goes: dawn (below) -> sunrise (horizon) -> peak (top) -> sunset (horizon) -> dusk (below)
+    if (t <= sunrisePos) {
+      // Dawn to sunrise segment (below horizon rising to horizon)
+      const segmentT = t / sunrisePos;
+      const x = dawnPoint.x + segmentT * (sunrisePoint.x - dawnPoint.x);
+      const y = dawnPoint.y + segmentT * (sunrisePoint.y - dawnPoint.y);
+      return { x, y };
+    } else if (t >= sunsetPos) {
+      // Sunset to dusk segment (horizon descending to below horizon)
+      const segmentT = (t - sunsetPos) / (1 - sunsetPos);
+      const x = sunsetPoint.x + segmentT * (duskPoint.x - sunsetPoint.x);
+      const y = sunsetPoint.y + segmentT * (duskPoint.y - sunsetPoint.y);
+      return { x, y };
+    } else {
+      // Sunrise to sunset - arc above horizon
+      const arcT = (t - sunrisePos) / (sunsetPos - sunrisePos);
+      // Quadratic Bezier from sunrise through peak to sunset
+      const P0 = sunrisePoint;
+      const P1 = { x: (sunrisePoint.x + sunsetPoint.x) / 2, y: 5 }; // Control point at peak
+      const P2 = sunsetPoint;
+      const oneMinusT = 1 - arcT;
+      const x = oneMinusT * oneMinusT * P0.x + 2 * oneMinusT * arcT * P1.x + arcT * arcT * P2.x;
+      const y = oneMinusT * oneMinusT * P0.y + 2 * oneMinusT * arcT * P1.y + arcT * arcT * P2.y;
+      return { x, y };
+    }
   };
-  const dawnPoint = getPointOnArc(0);
-  const sunrisePoint = getPointOnArc(sunrisePos);
-  const sunsetPoint = getPointOnArc(sunsetPos);
-  const duskPoint = getPointOnArc(1);
-  const currentPoint = getPointOnArc(currentSunPosition);
+
+  const currentPoint = getPointOnPath(currentSunPosition);
+  
+  // Build the SVG path: dawn -> sunrise (line), sunrise -> sunset (arc), sunset -> dusk (line)
+  const midX = (sunrisePoint.x + sunsetPoint.x) / 2;
+  const sunPath = `M ${dawnPoint.x} ${dawnPoint.y} L ${sunrisePoint.x} ${sunrisePoint.y} Q ${midX} 5 ${sunsetPoint.x} ${sunsetPoint.y} L ${duskPoint.x} ${duskPoint.y}`;
 
   // Use MQTT data if available, otherwise use calculated values
   const displaySunrise = sunrise !== '--:--' ? sunrise : calculatedSunrise;
@@ -141,7 +155,7 @@ export const SunMoonCard = ({
       <div className="space-y-4">
         {/* Sun path visualization */}
         <div className="w-full">
-          <svg viewBox="0 0 300 90" className="w-full h-28 rounded-xl">
+          <svg viewBox="0 0 300 100" className="w-full h-28 rounded-xl">
             <defs>
               {/* Sky gradient */}
               <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -165,33 +179,33 @@ export const SunMoonCard = ({
             <rect x="0" y="0" width="300" height="65" fill="url(#skyGradient)" rx="4" />
             
             {/* Ground/horizon */}
-            <rect x="0" y="65" width="300" height="25" fill="url(#groundGradient)" rx="0" />
+            <rect x="0" y="65" width="300" height="35" fill="url(#groundGradient)" rx="0" />
             <line x1="0" y1="65" x2="300" y2="65" stroke="hsl(var(--border))" strokeWidth="1" strokeOpacity="0.5" />
             
-            {/* Sun path arc (dashed) */}
-            <path d={`M ${dawnPoint.x} ${dawnPoint.y} Q 150 5 ${duskPoint.x} ${duskPoint.y}`} stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" fill="none" strokeOpacity="0.4" />
+            {/* Sun path (dashed) */}
+            <path d={sunPath} stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" fill="none" strokeOpacity="0.4" />
             
-            {/* Dawn point */}
+            {/* Dawn point (below horizon) */}
             <circle cx={dawnPoint.x} cy={dawnPoint.y} r="4" fill="#818cf8" />
-            <text x={dawnPoint.x} y={dawnPoint.y + 12} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+            <text x={dawnPoint.x + 12} y={dawnPoint.y + 3} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="start">
               {civilDawn}
             </text>
             
-            {/* Sunrise point */}
+            {/* Sunrise point (on horizon) */}
             <circle cx={sunrisePoint.x} cy={sunrisePoint.y} r="4" fill="#f97316" />
             <text x={sunrisePoint.x} y={sunrisePoint.y - 8} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
               {displaySunrise}
             </text>
             
-            {/* Sunset point */}
+            {/* Sunset point (on horizon) */}
             <circle cx={sunsetPoint.x} cy={sunsetPoint.y} r="4" fill="#f97316" />
             <text x={sunsetPoint.x} y={sunsetPoint.y - 8} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
               {displaySunset}
             </text>
             
-            {/* Dusk point */}
+            {/* Dusk point (below horizon) */}
             <circle cx={duskPoint.x} cy={duskPoint.y} r="4" fill="#a78bfa" />
-            <text x={duskPoint.x} y={duskPoint.y + 12} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+            <text x={duskPoint.x - 12} y={duskPoint.y + 3} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="end">
               {civilDusk}
             </text>
             
