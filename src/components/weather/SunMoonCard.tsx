@@ -171,27 +171,27 @@ export const SunMoonCard = ({
             {/* Sun path arc (dashed) */}
             <path d={`M ${dawnPoint.x} ${dawnPoint.y} Q 150 5 ${duskPoint.x} ${duskPoint.y}`} stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" fill="none" strokeOpacity="0.4" />
             
-            {/* Dawn point - below horizon */}
-            <circle cx={dawnPoint.x} cy={75} r="4" fill="#818cf8" />
-            <text x={dawnPoint.x} y={87} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+            {/* Dawn point */}
+            <circle cx={dawnPoint.x} cy={dawnPoint.y} r="4" fill="#818cf8" />
+            <text x={dawnPoint.x} y={dawnPoint.y + 12} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
               {civilDawn}
             </text>
             
-            {/* Sunrise point - on horizon */}
-            <circle cx={sunrisePoint.x} cy={65} r="4" fill="#f97316" />
-            <text x={sunrisePoint.x} y={57} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+            {/* Sunrise point */}
+            <circle cx={sunrisePoint.x} cy={sunrisePoint.y} r="4" fill="#f97316" />
+            <text x={sunrisePoint.x} y={sunrisePoint.y - 8} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
               {displaySunrise}
             </text>
             
-            {/* Sunset point - on horizon */}
-            <circle cx={sunsetPoint.x} cy={65} r="4" fill="#f97316" />
-            <text x={sunsetPoint.x} y={57} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+            {/* Sunset point */}
+            <circle cx={sunsetPoint.x} cy={sunsetPoint.y} r="4" fill="#f97316" />
+            <text x={sunsetPoint.x} y={sunsetPoint.y - 8} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
               {displaySunset}
             </text>
             
-            {/* Dusk point - below horizon */}
-            <circle cx={duskPoint.x} cy={75} r="4" fill="#a78bfa" />
-            <text x={duskPoint.x} y={87} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
+            {/* Dusk point */}
+            <circle cx={duskPoint.x} cy={duskPoint.y} r="4" fill="#a78bfa" />
+            <text x={duskPoint.x} y={duskPoint.y + 12} fontSize="7" fill="hsl(var(--muted-foreground))" textAnchor="middle">
               {civilDusk}
             </text>
             
