@@ -1,5 +1,5 @@
-import { Gauge, Droplets, ThermometerSnowflake, Sun, Zap, Cloud } from 'lucide-react';
-import { formatValue } from '@/lib/formatNumber';
+import { Gauge, Droplets, ThermometerSnowflake, Sun, Zap, Cloud } from "lucide-react";
+import { formatValue } from "@/lib/formatNumber";
 interface AtmosphereCardProps {
   barometer: number;
   humidity: number;
@@ -14,7 +14,7 @@ export const AtmosphereCard = ({
   dewpoint,
   uvIndex,
   solarRadiation,
-  cloudBase
+  cloudBase,
 }: AtmosphereCardProps) => {
   // Calculate QNH and QFE (simplified approximation)
   const qnh = barometer - 1;
@@ -22,7 +22,8 @@ export const AtmosphereCard = ({
 
   // Convert cloud base from meters to feet
   const cloudBaseFeet = cloudBase * 3.28084;
-  return <div className="glass-card p-6">
+  return (
+    <div className="glass-card p-6">
       <div className="flex items-start justify-between mb-6">
         <h3 className="section-title">
           <Gauge className="w-[24px] h-[24px] text-primary" />
@@ -76,18 +77,19 @@ export const AtmosphereCard = ({
           <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
             <Zap className="w-5 h-5 text-amber-400" />
             <div>
-              <p className="stat-label">SOLENERGI</p>
+              <p className="stat-label">Solenergi</p>
               <p className="font-semibold">{formatValue(solarRadiation, 0)} W/m²</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
             <Cloud className="w-5 h-5 text-gray-400" />
             <div>
-            <p className="stat-label">Molnbas</p>
+              <p className="stat-label">Molnbas</p>
               <p className="font-semibold">{formatValue(cloudBaseFeet, 0)} ft</p>
             </div>
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
