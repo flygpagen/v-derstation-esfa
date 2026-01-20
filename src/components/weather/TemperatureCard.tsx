@@ -1,5 +1,6 @@
 import { Thermometer, TrendingUp, TrendingDown, ExternalLink } from 'lucide-react';
 import { formatValue } from '@/lib/formatNumber';
+
 interface TemperatureCardProps {
   temperature: number;
   feelsLike: number;
@@ -7,6 +8,7 @@ interface TemperatureCardProps {
   low: number;
   streamUrl?: string;
 }
+
 export const TemperatureCard = ({
   temperature,
   feelsLike,
@@ -14,7 +16,8 @@ export const TemperatureCard = ({
   low,
   streamUrl
 }: TemperatureCardProps) => {
-  return <div className="glass-card p-4 md:p-6">
+  return (
+    <div className="glass-card p-4 md:p-6">
       <div className="flex items-start justify-between mb-4">
         <h3 className="section-title">
           <Thermometer className="w-[24px] h-[24px] text-primary" />
@@ -34,15 +37,38 @@ export const TemperatureCard = ({
           </p>
         </div>
         
-        
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <TrendingUp className="w-4 h-4 text-orange-400" />
+            <span className="text-sm text-muted-foreground">Högsta</span>
+            <span className="font-medium">{formatValue(high)}°</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <TrendingDown className="w-4 h-4 text-blue-400" />
+            <span className="text-sm text-muted-foreground">Lägsta</span>
+            <span className="font-medium">{formatValue(low)}°</span>
+          </div>
+        </div>
       </div>
       
       {/* Camera stream */}
-      {streamUrl && <a href="https://hlmfk.se/webbkameror" target="_blank" rel="noopener noreferrer" className="relative aspect-video rounded-lg overflow-hidden bg-black/20 block hover:ring-2 hover:ring-primary/50 transition-all group">
-          <img src={streamUrl} alt="Webbkamera" className="w-full h-full object-cover" />
+      {streamUrl && (
+        <a 
+          href="https://hlmfk.se/webbkameror"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative aspect-video rounded-lg overflow-hidden bg-black/20 block hover:ring-2 hover:ring-primary/50 transition-all group"
+        >
+          <img 
+            src={streamUrl}
+            alt="Webbkamera"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute top-2 right-2 bg-black/60 rounded-md p-1.5 opacity-70 group-hover:opacity-100 transition-opacity">
             <ExternalLink className="w-4 h-4 text-white" />
           </div>
-        </a>}
-    </div>;
+        </a>
+      )}
+    </div>
+  );
 };
