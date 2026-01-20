@@ -9,8 +9,6 @@ import { useWeatherContext } from '@/contexts/WeatherContext';
 export interface WeatherData {
   temperature: number;
   feelsLike: number;
-  tempHigh: number;
-  tempLow: number;
   windSpeed: number;
   windGust: number;
   windDirection: number;
@@ -54,8 +52,6 @@ export const WeatherDashboard = () => {
           <TemperatureCard 
             temperature={weatherData.temperature}
             feelsLike={weatherData.feelsLike}
-            high={weatherData.tempHigh}
-            low={weatherData.tempLow}
             streamUrl="https://hfk1.hassleholmsflygklubb.se/axis-cgi/mjpg/video.cgi?streamprofile=weewx"
           />
         </div>

@@ -1,19 +1,15 @@
-import { Thermometer, TrendingUp, TrendingDown, ExternalLink } from 'lucide-react';
+import { Thermometer, ExternalLink } from 'lucide-react';
 import { formatValue } from '@/lib/formatNumber';
 
 interface TemperatureCardProps {
   temperature: number;
   feelsLike: number;
-  high: number;
-  low: number;
   streamUrl?: string;
 }
 
 export const TemperatureCard = ({
   temperature,
   feelsLike,
-  high,
-  low,
   streamUrl
 }: TemperatureCardProps) => {
   return (
@@ -26,29 +22,14 @@ export const TemperatureCard = ({
       </div>
       
       {/* Temperature info */}
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <div className="text-4xl md:text-5xl font-bold text-foreground">
-            {formatValue(temperature)}
-            <span className="text-2xl md:text-3xl align-top">°C</span>
-          </div>
-          <p className="text-sm text-muted-foreground mt-1">
-            Känns som: <span className="text-foreground font-medium">{formatValue(feelsLike)}°</span>
-          </p>
+      <div className="mb-4">
+        <div className="text-4xl md:text-5xl font-bold text-foreground">
+          {formatValue(temperature)}
+          <span className="text-2xl md:text-3xl align-top">°C</span>
         </div>
-        
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5">
-            <TrendingUp className="w-4 h-4 text-orange-400" />
-            <span className="text-sm text-muted-foreground">Högsta</span>
-            <span className="font-medium">{formatValue(high)}°</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <TrendingDown className="w-4 h-4 text-blue-400" />
-            <span className="text-sm text-muted-foreground">Lägsta</span>
-            <span className="font-medium">{formatValue(low)}°</span>
-          </div>
-        </div>
+        <p className="text-sm text-muted-foreground mt-1">
+          Känns som: <span className="text-foreground font-medium">{formatValue(feelsLike)}°</span>
+        </p>
       </div>
       
       {/* Camera stream */}
