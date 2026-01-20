@@ -1,8 +1,6 @@
-import { History } from 'lucide-react';
 import flygklubbLogo from '@/assets/flygklubb-logo.png';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+
 interface WeatherHeaderProps {
   isConnected: boolean;
   lastUpdated: Date;
@@ -36,13 +34,6 @@ export const WeatherHeader = ({
       
       <div className="flex items-center gap-3">
         <ThemeSwitcher />
-        
-        <Button variant="outline" asChild>
-          <Link to="/historik" className="flex items-center gap-2">
-            <History className="w-4 h-4" />
-            Historik
-          </Link>
-        </Button>
         
         <div className="glass-card px-4 py-2 flex items-center gap-3">
           <div className={`pulse-dot ${!isConnected && 'bg-red-500'}`} />

@@ -15,8 +15,6 @@ const getWindDirection = (degrees: number): string => {
 const initialWeatherData: WeatherData = {
   temperature: 0,
   feelsLike: 0,
-  tempHigh: 0,
-  tempLow: 0,
   windSpeed: 0,
   windGust: 0,
   windDirection: 0,
