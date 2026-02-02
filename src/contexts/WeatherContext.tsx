@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode } from 'react';
-import { useMqttWeather } from '@/hooks/useMqttWeather';
+import { useJsonWeather } from '@/hooks/useJsonWeather';
 import type { WeatherData } from '@/components/WeatherDashboard';
 
 interface WeatherContextType {
@@ -23,7 +23,7 @@ interface WeatherProviderProps {
 }
 
 export const WeatherProvider = ({ children }: WeatherProviderProps) => {
-  const { weatherData, isConnected, error } = useMqttWeather();
+  const { weatherData, isConnected, error } = useJsonWeather();
 
   return (
     <WeatherContext.Provider value={{ weatherData, isConnected, error }}>
