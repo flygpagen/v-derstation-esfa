@@ -38,7 +38,7 @@ export const WeatherHeader = ({
         <div className="glass-card px-4 py-2 flex items-center gap-3">
           <div className={`pulse-dot ${!isConnected && 'bg-red-500'}`} />
           <span className="text-sm text-muted-foreground">
-            {isConnected ? 'Ansluten' : 'Frånkopplad'} • {formatDate(lastUpdated)}
+            {isConnected ? 'Live' : 'Ej ansluten'} • {formatDate(lastUpdated)}
           </span>
         </div>
       </div>
