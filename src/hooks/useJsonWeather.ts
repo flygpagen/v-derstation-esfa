@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { WeatherData } from '@/components/WeatherDashboard';
 
-const JSON_URL = '/wx/loop.json';
+const JSON_URL = 'https://hassleholmsflygklubb.se/wx/loop.json';
 const POLL_INTERVAL = 30000; // 30 seconds
 
 const MPS_TO_KNOTS = 1.94384;
