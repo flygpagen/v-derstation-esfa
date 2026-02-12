@@ -1,0 +1,20 @@
+{
+    "dateTime": 1770892982,
+    "outTemp_C": -0.4999999999999992,
+    "outHumidity": 91.0,
+    "windSpeed_mps": 2.68224,
+    "windGust_mps": 3.621024,
+    "windDir": 56.0,
+    "pressure_mbar": 984.0172062,
+    "barometer_mbar": null,
+    "dewpoint_C": -1.7856077315642889,
+    "windchill_C": -0.4999999999999992,
+    "heatindex_C": -0.4999999999999992,
+    "cloudbase_meter": 160.7009664455362,
+    "rain_mm": 0.0,
+    "rainRate_mm_per_hour": 0.0,
+    "radiation_Wpm2": 42.65,
+    "UV": 0.0,
+    "beaufort_count": 2,
+    "usUnits": 1
+}
