@@ -20,8 +20,6 @@ export const AtmosphereCard = ({
   const qnh = barometer - 1;
   const qfe = barometer - 5;
 
-  // Convert cloud base from meters to feet
-  const cloudBaseFeet = cloudBase * 3.28084;
   return (
     <div className="glass-card p-6">
       <div className="flex items-start justify-between mb-6">
@@ -85,7 +83,7 @@ export const AtmosphereCard = ({
             <Cloud className="w-5 h-5 text-gray-400" />
             <div>
               <p className="stat-label">Molnbas</p>
-              <p className="font-semibold">{formatValue(cloudBaseFeet, 0)} ft</p>
+              <p className="font-semibold">{formatValue(cloudBase, 0)} ft</p>
             </div>
           </div>
         </div>
