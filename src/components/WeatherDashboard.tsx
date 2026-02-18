@@ -4,6 +4,7 @@ import { AtmosphereCard } from './weather/AtmosphereCard';
 import { SunMoonCard } from './weather/SunMoonCard';
 import { WeatherHeader } from './weather/WeatherHeader';
 import { RainCard } from './weather/RainCard';
+import { FooterCard } from './weather/FooterCard';
 import { useWeatherContext } from '@/contexts/WeatherContext';
 
 export interface WeatherData {
@@ -79,6 +80,8 @@ export const WeatherDashboard = () => {
             sunset={weatherData.sunset}
           />
         </div>
+
+        <FooterCard />
       </div>
     </div>
   );
