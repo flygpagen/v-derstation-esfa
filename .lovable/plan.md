@@ -1,29 +1,26 @@
 
-# Nytt informationskort i botten av dashboarden
 
-## Vad
-Ett nytt kort ("footer-kort") längst ner pa dashboarden med:
-- Kort beskrivning av sajten (t.ex. "Vaderdata fran ESFA Hassleholms flygplats")
-- Lank till flygklubbens hemsida (hlmfk.se)
-- Copyright-text (t.ex. "(c) 2026 Hassleholms Flygklubb")
+# Heltal for temperatur/daggpunkt + solposition uppdateras vid ny data
 
-Kortet anvander samma `glass-card`-stil som ovriga kort pa sidan.
+## Andringar
 
-## Filandringar
+### 1. Temperatur och daggpunkt som heltal
 
-### Ny fil: `src/components/weather/FooterCard.tsx`
-- Skapar ett nytt kort-komponent med `glass-card`-klassen
-- Innehaller:
-  - En kort beskrivningstext om sajten
-  - En lank till flygklubbens hemsida (https://hlmfk.se) med extern-lank-ikon
-  - Copyright-rad med aktuellt ar
-- Texten ar statisk och latt att redigera direkt i komponenten
+**`src/components/weather/TemperatureCard.tsx`**
+- Rad 27: `formatValue(temperature)` -> `formatValue(temperature, 0)`
+- Rad 31: `formatValue(feelsLike)` -> `formatValue(feelsLike, 0)`
 
-### Andras: `src/components/WeatherDashboard.tsx`
-- Importera `FooterCard`
-- Lagga till `<FooterCard />` efter sista grid-sektionen, i botten av dashboarden
+**`src/components/weather/AtmosphereCard.tsx`**
+- Rad 65: `formatValue(dewpoint)` -> `formatValue(dewpoint, 0)`
 
-## Tekniska detaljer
-- Kortet far klassen `glass-card` for att matcha ovriga kort
-- Textstorlek och farger foljer befintliga `text-muted-foreground` och `text-foreground`-tokens
-- Lanken oppnas i ny flik med `target="_blank"` och `rel="noopener noreferrer"`
+### 2. Solens position uppdateras nar ny data hamtas
+
+Problemet: `useMemo` i `SunMoonCard.tsx` (rad 85) har en tom beroendelista `[]`, sa solens position beraknas bara en gang vid forsta renderingen och uppdateras aldrig.
+
+**`src/components/WeatherDashboard.tsx`**
+- Skicka med `lastUpdated` som prop till `SunMoonCard`
+
+**`src/components/weather/SunMoonCard.tsx`**
+- Lagg till `lastUpdated: Date` i `SunMoonCardProps`
+- Andra `useMemo`-beroendelistan fran `[]` till `[lastUpdated]` sa att solpositionen raknas om varje gang ny vaderdata hamtas (var 30:e sekund)
+
