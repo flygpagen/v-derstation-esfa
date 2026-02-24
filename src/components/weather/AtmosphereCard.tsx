@@ -62,7 +62,7 @@ export const AtmosphereCard = ({
             <ThermometerSnowflake className="w-5 h-5 text-cyan-400" />
             <div>
               <p className="stat-label">Daggpunkt</p>
-              <p className="font-semibold">{formatValue(dewpoint)}°C</p>
+              <p className="font-semibold">{formatValue(dewpoint, 0)}°C</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">

@@ -5,6 +5,7 @@ import { LATITUDE, LONGITUDE } from '@/lib/constants';
 interface SunMoonCardProps {
   sunrise: string;
   sunset: string;
+  lastUpdated: Date;
 }
 const formatTime = (date: Date): string => {
   return date.toLocaleTimeString('sv-SE', {
@@ -29,7 +30,8 @@ const formatDifference = (minutes: number): string => {
 };
 export const SunMoonCard = ({
   sunrise,
-  sunset
+  sunset,
+  lastUpdated
 }: SunMoonCardProps) => {
   const {
     civilDawn,
@@ -82,7 +84,7 @@ export const SunMoonCard = ({
       dayLength: todayDayLength,
       dayLengthDiff: diff
     };
-  }, []);
+  }, [lastUpdated]);
 
   // Calculate relative positions on the curve (0-1)
   const getRelativePosition = (time: Date) => {

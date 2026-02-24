@@ -78,6 +78,7 @@ export const WeatherDashboard = () => {
           <SunMoonCard 
             sunrise={weatherData.sunrise}
             sunset={weatherData.sunset}
+            lastUpdated={weatherData.lastUpdated}
           />
         </div>
 
