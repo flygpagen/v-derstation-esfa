@@ -24,11 +24,11 @@ export const TemperatureCard = ({
       {/* Temperature info */}
       <div className="mb-4">
         <div className="text-4xl md:text-5xl font-bold text-foreground">
-          {formatValue(temperature)}
+          {formatValue(temperature, 0)}
           <span className="text-2xl md:text-3xl align-top">°C</span>
         </div>
         <p className="text-sm text-muted-foreground mt-1">
-          Känns som: <span className="text-foreground font-medium">{formatValue(feelsLike)}°</span>
+          Känns som: <span className="text-foreground font-medium">{formatValue(feelsLike, 0)}°</span>
         </p>
       </div>
       
