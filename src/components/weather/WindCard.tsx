@@ -76,20 +76,20 @@ export const WindCard = ({
           </div>
 
           {/* Runway strip */}
-          <div className="absolute left-1/2 top-1/2 w-2.5 h-28 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-muted-foreground/60" style={{
+          <div className="absolute left-1/2 top-1/2 w-3 h-28 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-green-700/70" style={{
           transform: `translate(-50%, -50%) rotate(${RUNWAY_04}deg)`
         }}>
-            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-muted-foreground/80 rounded-sm" />
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-muted-foreground/80 rounded-sm" />
-            <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-xs font-bold text-foreground" style={{
-            transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)`
-          }}>
-              04
-            </span>
-            <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-xs font-bold text-foreground" style={{
+            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-white/80 rounded-sm" />
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-white/80 rounded-sm" />
+            <span className="absolute top-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-white" style={{
             transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)`
           }}>
               22
+            </span>
+            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-white" style={{
+            transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)`
+          }}>
+              04
             </span>
           </div>
 
