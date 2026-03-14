@@ -66,7 +66,7 @@ export const WindCard = ({
       {/* Section 2: Runway Impact (primary focus) */}
       <div className="flex flex-col lg:flex-row gap-6 items-center mb-6">
         {/* Compass with runway and wind */}
-        <div className="relative w-44 h-44 flex-shrink-0">
+        <div className="relative w-56 h-56 flex-shrink-0">
           {/* Compass rose */}
           <div className="absolute inset-0 rounded-full border-2 border-border/30">
             <span className="absolute top-1 left-1/2 -translate-x-1/2 text-xs font-medium text-muted-foreground">N</span>
