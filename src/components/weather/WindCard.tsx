@@ -95,9 +95,9 @@ export const WindCard = ({
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{
           transform: `translate(-50%, -50%) rotate(${direction}deg)`
         }}>
-            <div className="relative h-20 flex flex-col items-center">
-              <div className="w-1 h-14 bg-primary" />
-              <div className="w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[10px] border-t-primary" />
+            <div className="relative h-24 flex flex-col items-center">
+              <div className="w-1.5 h-17 bg-primary" />
+              <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[12px] border-t-primary" />
             </div>
           </div>
         </div>
