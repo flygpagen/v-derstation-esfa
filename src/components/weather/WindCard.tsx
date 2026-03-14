@@ -86,7 +86,7 @@ export const WindCard = ({
           }}>
               22
             </span>
-            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-white">
+            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[11px] font-bold text-white">
               04
             </span>
           </div>
