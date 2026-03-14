@@ -66,7 +66,7 @@ export const WindCard = ({
       {/* Section 2: Runway Impact (primary focus) */}
       <div className="flex flex-col lg:flex-row gap-6 items-center mb-6">
         {/* Compass with runway and wind */}
-        <div className="relative w-44 h-44 flex-shrink-0">
+        <div className="relative w-56 h-56 flex-shrink-0">
           {/* Compass rose */}
           <div className="absolute inset-0 rounded-full border-2 border-border/30">
             <span className="absolute top-1 left-1/2 -translate-x-1/2 text-xs font-medium text-muted-foreground">N</span>
@@ -76,17 +76,17 @@ export const WindCard = ({
           </div>
 
           {/* Runway strip */}
-          <div className="absolute left-1/2 top-1/2 w-3 h-28 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-green-700/70" style={{
+          <div className="absolute left-1/2 top-1/2 w-4 h-36 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-green-700/70" style={{
           transform: `translate(-50%, -50%) rotate(${RUNWAY_04}deg)`
         }}>
-            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-white/80 rounded-sm" />
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-white/80 rounded-sm" />
-            <span className="absolute top-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-white" style={{
+            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-5 h-1 bg-white/80 rounded-sm" />
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-5 h-1 bg-white/80 rounded-sm" />
+            <span className="absolute top-1 left-1/2 -translate-x-1/2 text-[11px] font-bold text-white" style={{
             transform: `translateX(-50%) rotate(180deg)`
           }}>
               22
             </span>
-            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-white">
+            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[11px] font-bold text-white">
               04
             </span>
           </div>
@@ -95,9 +95,9 @@ export const WindCard = ({
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{
           transform: `translate(-50%, -50%) rotate(${direction}deg)`
         }}>
-            <div className="relative h-16 flex flex-col items-center">
-              <div className="w-0.5 h-10 bg-primary" />
-              <div className="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[8px] border-t-primary" />
+            <div className="relative h-20 flex flex-col items-center">
+              <div className="w-1 h-14 bg-primary" />
+              <div className="w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[10px] border-t-primary" />
             </div>
           </div>
         </div>
