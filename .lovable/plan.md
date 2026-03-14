@@ -1,26 +1,21 @@
 
 
-# Heltal for temperatur/daggpunkt + solposition uppdateras vid ny data
+# Korrigera banvisningen i vindkompasssen
 
-## Andringar
+## Problem
+1. **Siffrorna sitter fel**: "04" och "22" är placerade på fel ände. På en riktig bana sitter siffran vid tröskeln – "04" vid sydvästra änden och "22" vid nordöstra änden. Nu är de omvända.
+2. **Banans utseende**: Banan ska vara grön (gräsbana) med vita siffror, inte grå.
 
-### 1. Temperatur och daggpunkt som heltal
+## Åtgärd
 
-**`src/components/weather/TemperatureCard.tsx`**
-- Rad 27: `formatValue(temperature)` -> `formatValue(temperature, 0)`
-- Rad 31: `formatValue(feelsLike)` -> `formatValue(feelsLike, 0)`
+### `src/components/weather/WindCard.tsx`
 
-**`src/components/weather/AtmosphereCard.tsx`**
-- Rad 65: `formatValue(dewpoint)` -> `formatValue(dewpoint, 0)`
+**Byt plats på siffrorna:**
+- "04" flyttas från toppen (NE-änden) till botten (SW-änden)
+- "22" flyttas från botten till toppen
 
-### 2. Solens position uppdateras nar ny data hamtas
-
-Problemet: `useMemo` i `SunMoonCard.tsx` (rad 85) har en tom beroendelista `[]`, sa solens position beraknas bara en gang vid forsta renderingen och uppdateras aldrig.
-
-**`src/components/WeatherDashboard.tsx`**
-- Skicka med `lastUpdated` som prop till `SunMoonCard`
-
-**`src/components/weather/SunMoonCard.tsx`**
-- Lagg till `lastUpdated: Date` i `SunMoonCardProps`
-- Andra `useMemo`-beroendelistan fran `[]` till `[lastUpdated]` sa att solpositionen raknas om varje gang ny vaderdata hamtas (var 30:e sekund)
+**Ändra färger:**
+- Banans bakgrund: `bg-muted-foreground/60` → `bg-green-700/70` (grön gräsbana)
+- Tröskelmarkeringar: `bg-muted-foreground/80` → `bg-white/80` (vita)
+- Siffrornas textfärg: `text-foreground` → `text-white` och placeras **på** banan istället för utanför
 
