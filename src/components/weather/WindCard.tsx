@@ -82,13 +82,11 @@ export const WindCard = ({
             <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-white/80 rounded-sm" />
             <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-white/80 rounded-sm" />
             <span className="absolute top-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-white" style={{
-            transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)`
+            transform: `translateX(-50%) rotate(180deg)`
           }}>
               22
             </span>
-            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-white" style={{
-            transform: `translateX(-50%) rotate(-${RUNWAY_04}deg)`
-          }}>
+            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-white">
               04
             </span>
           </div>

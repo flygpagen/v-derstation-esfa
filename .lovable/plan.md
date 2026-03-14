@@ -1,16 +1,26 @@
 
 
-# Rotera bansiffrorna i banriktningen
+# Heltal for temperatur/daggpunkt + solposition uppdateras vid ny data
 
-## Problem
-Siffrorna "04" och "22" motroteras just nu (`rotate(-40deg)`) så att de alltid är horisontella. Istället ska de vara vridna i linje med banriktningen — "22" pekar mot 220° och "04" pekar mot 40°.
+## Andringar
 
-## Åtgärd
+### 1. Temperatur och daggpunkt som heltal
 
-### `src/components/weather/WindCard.tsx`
+**`src/components/weather/TemperatureCard.tsx`**
+- Rad 27: `formatValue(temperature)` -> `formatValue(temperature, 0)`
+- Rad 31: `formatValue(feelsLike)` -> `formatValue(feelsLike, 0)`
 
-- **"22" (rad 84-88)**: Siffran sitter i toppen av banan (NE-änden) och ska peka mot 220° (söderut). Rotera 180° relativt banan: `rotate(180deg)` istället för `rotate(-40deg)`.
-- **"04" (rad 89-93)**: Siffran sitter i botten (SW-änden) och ska peka mot 40° (norrut). Ta bort motrotationen helt — siffran behöver ingen extra rotation eftersom banan redan är roterad 40°: `rotate(0deg)` / ta bort rotate.
+**`src/components/weather/AtmosphereCard.tsx`**
+- Rad 65: `formatValue(dewpoint)` -> `formatValue(dewpoint, 0)`
 
-Resultatet: båda siffrorna linjerar med den riktning de indikerar, precis som på en riktig bana.
+### 2. Solens position uppdateras nar ny data hamtas
+
+Problemet: `useMemo` i `SunMoonCard.tsx` (rad 85) har en tom beroendelista `[]`, sa solens position beraknas bara en gang vid forsta renderingen och uppdateras aldrig.
+
+**`src/components/WeatherDashboard.tsx`**
+- Skicka med `lastUpdated` som prop till `SunMoonCard`
+
+**`src/components/weather/SunMoonCard.tsx`**
+- Lagg till `lastUpdated: Date` i `SunMoonCardProps`
+- Andra `useMemo`-beroendelistan fran `[]` till `[lastUpdated]` sa att solpositionen raknas om varje gang ny vaderdata hamtas (var 30:e sekund)
 
