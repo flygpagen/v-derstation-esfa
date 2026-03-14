@@ -76,7 +76,7 @@ export const WindCard = ({
           </div>
 
           {/* Runway strip */}
-          <div className="absolute left-1/2 top-1/2 w-3 h-28 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-green-700/70" style={{
+          <div className="absolute left-1/2 top-1/2 w-4 h-36 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-green-700/70" style={{
           transform: `translate(-50%, -50%) rotate(${RUNWAY_04}deg)`
         }}>
             <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-white/80 rounded-sm" />
